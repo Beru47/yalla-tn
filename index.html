@@ -118,6 +118,57 @@
 
   footer { display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; color:var(--muted); font-size:13px; padding-bottom:24px; }
 
+  /* invitation gate */
+  body.locked { overflow:hidden; }
+  #gate { position:fixed; inset:0; z-index:50; display:grid; place-items:center; padding:24px; overflow:hidden;
+    background:radial-gradient(700px 520px at 50% 38%, rgba(109,74,224,.38), transparent 70%), var(--bg);
+    transition:opacity .9s var(--ease), visibility .9s; }
+  #gate.gone { opacity:0; visibility:hidden; }
+  #gate .langs { position:absolute; top:22px; inset-inline-end:24px; }
+  .gate-in { width:100%; max-width:420px; text-align:center; position:relative; z-index:1; }
+  .gate-logo { width:120px; height:120px; border-radius:30px; display:block; margin:0 auto 26px; animation:breathe 3.2s ease-in-out infinite; }
+  @keyframes breathe { 0%,100% { box-shadow:0 0 40px rgba(109,74,224,.45); } 50% { box-shadow:0 0 90px rgba(169,140,255,.7), 0 0 150px rgba(255,193,72,.18); } }
+  .gate-in h1 { font-size:clamp(30px, 8vw, 42px); margin:12px 0 8px; }
+  .gate-copy p { color:var(--muted); margin:0 0 24px; }
+  .code { display:flex; gap:8px; }
+  .code input { flex:1; min-width:0; font:inherit; font-size:17px; font-weight:800; letter-spacing:3px; text-transform:uppercase; text-align:center;
+    color:var(--ink); background:rgba(255,255,255,.06); border:1px solid var(--line); border-radius:14px; padding:15px 12px; outline:none; transition:border-color .3s; }
+  .code input::placeholder { letter-spacing:1.5px; color:#6f6890; font-weight:600; }
+  .code input:focus { border-color:var(--violet-l); }
+  .code button { font:inherit; font-weight:800; color:#1b1206; background:linear-gradient(90deg, var(--gold), var(--gold-2)); border:0; border-radius:14px; padding:0 20px; cursor:pointer; box-shadow:0 8px 26px rgba(255,193,72,.35); }
+  .code button:disabled { opacity:.6; }
+  .code button:focus-visible, .code input:focus-visible { outline:2px solid var(--gold); outline-offset:3px; }
+  .err { min-height:22px; color:#FF9C85; font-size:14px; margin-top:10px; }
+  .shake { animation:shake .45s; }
+  @keyframes shake { 20%,60% { transform:translateX(-8px); } 40%,80% { transform:translateX(8px); } }
+  .chosen { position:absolute; left:0; right:0; top:150px; opacity:0; transform:translateY(10px); transition:opacity .8s .5s var(--ease), transform .8s .5s var(--ease);
+    font-size:22px; line-height:1.4; font-weight:800; color:var(--gold-2); text-shadow:0 0 18px rgba(255,193,72,.6); }
+  #gate.open .gate-copy, #gate.open form, #gate.open .err { opacity:0; transition:opacity .35s; pointer-events:none; }
+  #gate.open .chosen { opacity:1; transform:none; }
+  #gate.open .gate-logo { animation:flare 1.5s var(--ease) forwards; }
+  @keyframes flare { to { transform:scale(1.18); box-shadow:0 0 120px rgba(255,193,72,.9), 0 0 260px rgba(169,140,255,.65); } }
+  #gate::after { content:""; position:absolute; left:50%; top:calc(50% - 120px); width:40px; height:40px; margin:-20px; border-radius:50%;
+    background:radial-gradient(circle, rgba(255,231,168,.95), rgba(255,193,72,.35) 40%, transparent 70%); transform:scale(0); opacity:0; pointer-events:none; }
+  #gate.open::after { animation:burst 1.8s 1.6s var(--ease) forwards; }
+  @keyframes burst { 0% { transform:scale(0); opacity:1; } 100% { transform:scale(70); opacity:0; } }
+
+  /* the street of lamps */
+  .street { display:flex; align-items:flex-end; justify-content:center; gap:clamp(12px, 4vw, 34px); margin:8px auto 22px; }
+  .lamp { display:flex; flex-direction:column; align-items:center; }
+  .lamp i { width:10px; height:10px; border-radius:50%; background:#2b2440; transition:background .7s, box-shadow .7s; transition-delay:calc(var(--d) * .22s); }
+  .lamp b { width:2px; height:46px; background:linear-gradient(#3b3355, transparent); }
+  .lamp.you i { width:16px; height:16px; }
+  .lamp.you b { height:64px; }
+  .lamp.you span { font-size:11px; font-weight:800; color:var(--gold); margin-top:4px; opacity:0; transition:opacity .7s; transition-delay:calc(var(--d) * .22s); }
+  .street.on .lamp i { background:var(--gold-2); box-shadow:0 0 10px var(--gold), 0 0 28px rgba(255,193,72,.55); }
+  .street.on .lamp.you i { box-shadow:0 0 14px var(--gold), 0 0 44px rgba(255,193,72,.8), 0 0 90px rgba(169,140,255,.4); }
+  .street.on .lamp.you span { opacity:1; }
+  .thanks .t1 { font-size:clamp(19px, 2.6vw, 24px); font-weight:800; line-height:1.4; margin-bottom:10px; }
+  .thanks .t2 { color:var(--muted); font-size:16px; margin:0 0 20px; }
+  .send { display:inline-flex; align-items:center; gap:8px; color:var(--gold-2); text-decoration:none; font-weight:800; border:1px solid rgba(255,193,72,.45); border-radius:999px; padding:11px 20px; transition:background .3s var(--ease), box-shadow .3s var(--ease); }
+  .send:hover { background:rgba(255,193,72,.1); box-shadow:0 0 24px rgba(255,193,72,.3); }
+  .send svg { width:18px; height:18px; }
+
   @keyframes rise { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:none; } }
   @media (prefers-reduced-motion: reduce) { * { animation:none !important; transition:none !important; } }
 
@@ -142,7 +193,29 @@
   }
 </style>
 </head>
-<body>
+<body class="locked">
+<div id="gate" role="dialog" aria-modal="true" aria-labelledby="gTitle">
+  <nav class="langs" aria-label="Language">
+    <button type="button" data-lang="ar">ع</button>
+    <button type="button" data-lang="fr">FR</button>
+    <button type="button" data-lang="en">EN</button>
+  </nav>
+  <div class="gate-in">
+    <img class="gate-logo" src="yalla.png" alt="Yalla" width="120" height="120">
+    <div class="gate-copy">
+      <span class="pill" data-t="pill"></span>
+      <h1 id="gTitle" data-t="gTitle"></h1>
+      <p data-t="gSub"></p>
+    </div>
+    <form class="code" id="codeForm" autocomplete="off">
+      <input id="code" name="code" data-tp="gPh" autocapitalize="characters" spellcheck="false" aria-labelledby="gTitle" required>
+      <button type="submit" data-t="gBtn"></button>
+    </form>
+    <div class="err" id="err" role="alert"></div>
+    <div class="chosen" data-t="chosen"></div>
+  </div>
+</div>
+
 <header>
   <div class="brand"><img src="yalla.png" alt=""><span>Yalla</span></div>
   <nav class="langs" aria-label="Language">
@@ -173,7 +246,7 @@
   <section class="card" aria-labelledby="dl">
     <h2 id="dl" data-t="dlTitle"></h2>
     <p class="sub" data-t="dlSub"></p>
-    <a class="btn" id="download" href="https://expo.dev/artifacts/eas/Ztb3MILKIqbW5vJp4PxlAg0Wn-BQlEkqTPJ5-TAE7ZE.apk" rel="noopener">
+    <a class="btn" id="download" href="#" data-apk rel="noopener">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>
       <span data-t="btn"></span>
     </a>
@@ -190,9 +263,14 @@
   </section>
 </main>
 
-<section class="thanks"><p data-t="thanks1"></p><p data-t="thanks2"></p></section>
+<section class="thanks" id="thanks">
+  <div class="street" id="street" aria-hidden="true"></div>
+  <p class="t1" data-t="thanks1"></p>
+  <p class="t2" data-t="thanks2"></p>
+  <a class="send" href="mailto:yalla.eagle@gmail.com?subject=Yalla%20beta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.4 1 1.1 1 1.8V16h5v-.3c0-.7.4-1.4 1-1.8A6 6 0 0 0 12 3z"/></svg><span data-t="send"></span></a>
+</section>
 
-<div class="sticky" id="sticky"><a class="btn" href="https://expo.dev/artifacts/eas/Ztb3MILKIqbW5vJp4PxlAg0Wn-BQlEkqTPJ5-TAE7ZE.apk" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg><span data-t="btn"></span></a></div>
+<div class="sticky" id="sticky"><a class="btn" href="#" data-apk rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg><span data-t="btn"></span></a></div>
 
 <footer>
   <span data-t="foot"></span>
@@ -218,7 +296,15 @@ const T = {
     s2: 'If Play Protect warns you: “More details” → “Install anyway”. It does this for every app outside the Play Store.',
     s3: 'Sign in with your email and enter the code you receive.',
     thanks1: 'You are not just testing an app. You are <i class=lit>lighting the first lamps</i> of a better street.',
-    thanks2: 'Every bug you find and every idea you share makes the next light brighter. <a href="mailto:yalla.eagle@gmail.com?subject=Yalla%20beta">Tell us what you see</a>.',
+    thanks2: 'Every bug you find and every idea you share makes the next light brighter.',
+    send: 'Send us a light',
+    you: 'you',
+    gTitle: 'You have been invited.',
+    gSub: 'Enter the code from your invitation to light your lamp.',
+    gPh: 'Invitation code',
+    gBtn: 'Light it up',
+    gErr: 'This code does not open the door. Check your invitation.',
+    chosen: 'Welcome. You were chosen<br>to light the first lamps.',
     foot: 'Private beta'
   },
   fr: {
@@ -237,7 +323,15 @@ const T = {
     s2: 'Si Play Protect vous avertit : « Plus de détails » → « Installer quand même ». C’est le cas pour toute application hors Play Store.',
     s3: 'Connectez-vous avec votre e-mail et saisissez le code reçu.',
     thanks1: "Vous ne testez pas seulement une application. Vous <i class=lit>allumez les premières lumières</i> d'une rue meilleure.",
-    thanks2: 'Chaque bug trouvé, chaque idée partagée rend la prochaine lumière plus forte. <a href="mailto:yalla.eagle@gmail.com?subject=Yalla%20b%C3%AAta">Dites-nous ce que vous voyez</a>.',
+    thanks2: 'Chaque bug trouvé, chaque idée partagée rend la prochaine lumière plus forte.',
+    send: 'Envoyez-nous une lumière',
+    you: 'vous',
+    gTitle: 'Vous êtes invité·e.',
+    gSub: 'Entrez le code de votre invitation pour allumer votre lumière.',
+    gPh: 'Code d’invitation',
+    gBtn: 'Allumer',
+    gErr: 'Ce code n’ouvre pas la porte. Vérifiez votre invitation.',
+    chosen: 'Bienvenue. Vous avez été choisi·e<br>pour allumer les premières lumières.',
     foot: 'Bêta privée'
   },
   ar: {
@@ -256,7 +350,15 @@ const T = {
     s2: 'إذا ظهر تحذير Play Protect: «مزيد من التفاصيل» ← «التثبيت على أي حال». يظهر هذا لكل تطبيق من خارج متجر Play.',
     s3: 'سجّل الدخول ببريدك الإلكتروني وأدخل الرمز الذي يصلك.',
     thanks1: 'أنت لا تجرّب تطبيقًا فحسب، بل <i class=lit>تُضيء أولى أنوار</i> شارعٍ أفضل.',
-    thanks2: 'كلّ خلل تكتشفه وكلّ فكرة تشاركها تجعل النور التالي أقوى. <a href="mailto:yalla.eagle@gmail.com?subject=Yalla%20beta">أخبرنا بما تراه</a>.',
+    thanks2: 'كلّ خلل تكتشفه وكلّ فكرة تشاركها تجعل النور التالي أقوى.',
+    send: 'أرسل لنا نورًا',
+    you: 'أنت',
+    gTitle: 'لقد تمّت دعوتك.',
+    gSub: 'أدخل رمز دعوتك لتُضيء نورك.',
+    gPh: 'رمز الدعوة',
+    gBtn: 'أضِئ',
+    gErr: 'هذا الرمز لا يفتح الباب. تحقّق من دعوتك.',
+    chosen: 'أهلًا بك. وقع عليك الاختيار<br>لتُضيء أولى الأنوار.',
     foot: 'نسخة تجريبية خاصة'
   }
 };
@@ -266,6 +368,8 @@ function setLang(l) {
   document.documentElement.lang = l;
   document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
   document.querySelectorAll('[data-t]').forEach(el => { el.innerHTML = t[el.dataset.t]; });
+  document.querySelectorAll('[data-tp]').forEach(el => { el.placeholder = t[el.dataset.tp]; });
+  const you = document.querySelector('.lamp.you span'); if (you) you.textContent = t.you;
   document.querySelectorAll('.langs button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === l)));
   try { localStorage.setItem('yalla-lang', l); } catch (e) {}
 }
@@ -275,6 +379,52 @@ let saved = null;
 try { saved = localStorage.getItem('yalla-lang'); } catch (e) {}
 const nav = (navigator.language || 'en').slice(0, 2);
 setLang(saved || (T[nav] ? nav : 'en'));
+
+// The APK link is sealed with the invitation code (PBKDF2 -> AES-GCM): without the code, the source shows nothing.
+const SEALED = {"s":"iMqQs1zgCNTROFZudmzM3w==","i":"Tl1MmYO8i/sasArn","c":"L6FPc50o1P7dR+dvJeBSAcF/uW6weUod8Iqd/14ipaHcbkO76RontHnPzoGUqzv4/Qq+BVwWJJPaDhaXOq4aysA/JybIhj4cCLIpazqnqQOo3TdEWT+gFIrwJJhg4kU6zq5vDg9IvlE="};
+const b64 = (s) => Uint8Array.from(atob(s), (ch) => ch.charCodeAt(0));
+async function openSeal(code) {
+  const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(code.trim().toUpperCase()), 'PBKDF2', false, ['deriveKey']);
+  const key = await crypto.subtle.deriveKey({ name: 'PBKDF2', salt: b64(SEALED.s), iterations: 200000, hash: 'SHA-256' }, base, { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
+  return JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({ name: 'AES-GCM', iv: b64(SEALED.i) }, key, b64(SEALED.c))));
+}
+const gate = document.getElementById('gate'), form = document.getElementById('codeForm'), input = document.getElementById('code'), err = document.getElementById('err');
+function unlock(data, animate) {
+  document.querySelectorAll('[data-apk]').forEach((a) => { a.href = data.apk; });
+  const done = () => { gate.classList.add('gone'); document.body.classList.remove('locked'); };
+  if (!animate) return done();
+  gate.classList.add('open');
+  setTimeout(done, 3300);
+}
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = form.querySelector('button'); btn.disabled = true; err.textContent = '';
+  try {
+    const data = await openSeal(input.value);
+    try { localStorage.setItem('yalla-invite', input.value.trim().toUpperCase()); } catch (x) {}
+    unlock(data, true);
+  } catch (x) {
+    err.textContent = T[document.documentElement.lang].gErr;
+    form.classList.remove('shake'); void form.offsetWidth; form.classList.add('shake');
+    btn.disabled = false; input.select();
+  }
+});
+// An invitation link can carry the code (…/yalla-tn/#invite=CODE): it fills in, the guest still taps.
+const fromLink = location.hash.match(/invite=([^&]+)/);
+if (fromLink) { input.value = decodeURIComponent(fromLink[1]); history.replaceState(null, '', location.pathname); }
+(async () => {
+  let saved = null; try { saved = localStorage.getItem('yalla-invite'); } catch (x) {}
+  if (saved) { try { unlock(await openSeal(saved), false); return; } catch (x) {} }
+  if (!fromLink) input.focus();
+})();
+
+// the street: eight lamps, the last one is yours; they light up when you reach them
+const street = document.getElementById('street');
+street.innerHTML = Array.from({ length: 9 }, (_, k) => `<div class="lamp${k === 8 ? ' you' : ''}" style="--d:${k}"><i></i><b></b>${k === 8 ? '<span></span>' : ''}</div>`).join('');
+setLang(document.documentElement.lang);
+if ('IntersectionObserver' in window) {
+  new IntersectionObserver(([e], o) => { if (e.isIntersecting) { street.classList.add('on'); o.disconnect(); } }, { threshold: .6 }).observe(street);
+} else street.classList.add('on');
 
 const bar = document.getElementById('sticky');
 if ('IntersectionObserver' in window) {
