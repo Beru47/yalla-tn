@@ -26,6 +26,7 @@
     --ease:cubic-bezier(.16,1,.3,1);
   }
   * { box-sizing:border-box; }
+  [hidden] { display:none !important; }
   html, body { margin:0; }
   body {
     min-height:100vh; background:var(--bg); color:var(--ink);
@@ -74,6 +75,15 @@
     box-shadow:0 0 calc(20px + var(--p, 0) * 80px) rgba(255,193,72, calc(.15 + var(--p, 0) * .6)); transform:scale(calc(1 + var(--p, 0) * .06)); filter:saturate(calc(.6 + var(--p, 0) * .6)) brightness(calc(.7 + var(--p, 0) * .5)); }
   .hold:not(.active) .ring { animation:pulse 2.6s ease-in-out infinite; }
   @keyframes pulse { 0%,100% { box-shadow:0 0 0 0 rgba(255,193,72,.0); } 50% { box-shadow:0 0 0 10px rgba(255,193,72,.08); } }
+  #gate, #gate * { -webkit-user-select:none; user-select:none; -webkit-tap-highlight-color:transparent; -webkit-touch-callout:none; }
+  .hold img { pointer-events:none; -webkit-user-drag:none; }
+  .hold:focus { outline:none; } .hold:focus-visible { outline:2px solid var(--gold); outline-offset:6px; }
+  /* on a computer: scan the invitation onto the phone */
+  .gate-qr { display:none; margin-top:22px; align-items:center; gap:14px; text-align:start; max-width:360px; }
+  .gate-qr div { flex:none; width:120px; height:120px; background:#fff; border-radius:14px; padding:9px; }
+  .gate-qr div svg { width:100%; height:100%; display:block; }
+  .gate-qr p { margin:0; font-size:14px; color:var(--muted); }
+  @media (hover:hover) and (pointer:fine) { .gate-qr.on { display:flex; } }
   .hint { margin-top:16px; font-size:14px; color:var(--muted); letter-spacing:.3px; }
   .hold[disabled] { cursor:default; opacity:.45; }
 
@@ -191,9 +201,10 @@
     <p data-t="gSub" id="gSub"></p>
     <button type="button" class="hold" id="hold" aria-describedby="hint">
       <span class="ring"></span>
-      <img src="yalla.png" alt="">
+      <img src="yalla.png" alt="" draggable="false">
     </button>
     <div class="hint" id="hint" data-t="hint"></div>
+    <div class="gate-qr" id="gateQr"><div id="gqr" role="img" aria-label="QR code"></div><p data-t="gateQr"></p></div>
   </div>
   <div class="welcome" id="welcome" data-t="welcome"></div>
   <div class="city" aria-hidden="true"><svg id="city" viewBox="0 0 1200 190" preserveAspectRatio="xMidYMax slice"></svg></div>
@@ -265,6 +276,7 @@ const T = {
     gTitle: 'you have been chosen.', gTitleAnon: 'You have been chosen.',
     gSub: 'One of the very first people to see Yalla, before the rest of Tunisia.',
     num: 'Invitation n° {n}', hint: 'Press and hold the light',
+    gateQr: '<b>On a computer?</b> Scan this with your Android phone: your invitation opens there, ready to install.',
     welcome: 'Welcome among the first lights.',
     lockedTitle: 'By invitation only.', lockedSub: 'Yalla is in private beta. Ask the person who invited you for your personal link.',
     pill: 'Private beta · by invitation',
@@ -290,6 +302,7 @@ const T = {
     gTitle: 'vous avez été choisi·e.', gTitleAnon: 'Vous avez été choisi·e.',
     gSub: 'Parmi les toutes premières personnes à découvrir Yalla, avant le reste de la Tunisie.',
     num: 'Invitation n° {n}', hint: 'Maintenez la lumière appuyée',
+    gateQr: '<b>Sur un ordinateur ?</b> Scannez avec votre téléphone Android : votre invitation s’y ouvre, prête à installer.',
     welcome: 'Bienvenue parmi les premières lumières.',
     lockedTitle: 'Sur invitation uniquement.', lockedSub: 'Yalla est en bêta privée. Demandez votre lien personnel à la personne qui vous a invité·e.',
     pill: 'Bêta privée · sur invitation',
@@ -315,6 +328,7 @@ const T = {
     gTitle: 'وقع عليك الاختيار.', gTitleAnon: 'وقع عليك الاختيار.',
     gSub: 'من أوائل من يرون يلّا، قبل بقية تونس.',
     num: 'الدعوة رقم {n}', hint: 'اضغط مطوّلًا على النور',
+    gateQr: '<b>على الحاسوب؟</b> امسح الرمز بهاتف أندرويد: تُفتح دعوتك عليه جاهزة للتثبيت.',
     welcome: 'أهلًا بك بين الأنوار الأولى.',
     lockedTitle: 'بدعوة فقط.', lockedSub: 'يلّا في نسخة تجريبية خاصة. اطلب رابطك الشخصي ممّن دعاك.',
     pill: 'نسخة تجريبية خاصة · بدعوة',
@@ -429,7 +443,7 @@ else openSeal(invite.i, invite.k).then((d) => {
   }).catch(() => {
     invite = { i: null, k: null, to: '', n: '' };
     try { localStorage.removeItem('yalla-invite'); localStorage.removeItem('yalla-lit'); } catch (e) {}
-    hold.disabled = true; document.getElementById('hint').hidden = true; setLang(lang);
+    hold.disabled = true; document.getElementById('hint').hidden = true; document.getElementById('gateQr').classList.remove('on'); setLang(lang);
   });
 
 // press and hold (touch, mouse, keyboard): the ring fills, the lamp ignites, the city lights up
@@ -468,6 +482,7 @@ try {
   const mine = invite.k ? '#' + new URLSearchParams({ i: invite.i, k: invite.k, to: invite.to, n: invite.n }).toString() : '';
   const qr = qrcode(0, 'M'); qr.addData(location.origin + location.pathname + mine); qr.make();
   document.getElementById('qr').innerHTML = qr.createSvgTag({ cellSize: 4, margin: 0, scalable: true });
+  if (invite.k) { document.getElementById('gqr').innerHTML = qr.createSvgTag({ cellSize: 4, margin: 0, scalable: true }); document.getElementById('gateQr').classList.add('on'); }
 } catch (e) { document.querySelector('.row').style.display = 'none'; }
 </script>
 </body>
