@@ -2,14 +2,15 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
 <meta name="theme-color" content="#06030F">
-<title>Yalla — private beta</title>
-<meta name="description" content="Yalla: plans with your people, one promise to yourself, and your street before and after. Private beta for Android.">
+<title>Yalla — you've been chosen</title>
+<meta name="description" content="A personal invitation to the first lights of Yalla.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Yalla — private beta">
-<meta property="og:description" content="Tunisia gets better when each of us changes a little. Private beta for Android.">
+<meta property="og:title" content="Yalla — you've been chosen">
+<meta property="og:description" content="A personal invitation to the first lights of Yalla. Tunisia gets better when each of us changes a little.">
 <meta property="og:image" content="https://beru47.github.io/yalla-tn/yalla.png">
 <meta property="og:url" content="https://beru47.github.io/yalla-tn/">
 <meta name="twitter:card" content="summary">
@@ -21,7 +22,7 @@
 <style>
   :root {
     --bg:#06030F; --card:rgba(255,255,255,.045); --line:rgba(255,255,255,.09);
-    --ink:#F4F1FF; --muted:#A79FC4; --violet:#6D4AE0; --violet-l:#A98CFF; --gold:#FFC148; --gold-2:#FFE7A8;
+    --ink:#F4F1FF; --muted:#A79FC4; --violet:#6D4AE0; --violet-l:#A98CFF; --gold:#FFC148; --gold-2:#FFE7A8; --teal:#3FD2C0;
     --ease:cubic-bezier(.16,1,.3,1);
   }
   * { box-sizing:border-box; }
@@ -29,81 +30,93 @@
   body {
     min-height:100vh; background:var(--bg); color:var(--ink);
     font:16px/1.55 Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
-    background-image:
-      radial-gradient(900px 600px at 18% 30%, rgba(109,74,224,.28), transparent 60%),
-      radial-gradient(700px 500px at 85% 80%, rgba(255,193,72,.10), transparent 60%);
-    background-attachment:fixed;
-    display:flex; flex-direction:column;
+    background-image:radial-gradient(900px 600px at 18% 20%, rgba(109,74,224,.26), transparent 60%), radial-gradient(700px 500px at 85% 85%, rgba(255,193,72,.09), transparent 60%);
+    background-attachment:fixed; display:flex; flex-direction:column;
   }
   html[lang="ar"] body { font-family:Cairo, system-ui, sans-serif; }
-  /* a few still stars, CSS only */
-  body::before {
-    content:""; position:fixed; inset:0; pointer-events:none; opacity:.55;
-    background-image:
-      radial-gradient(1.5px 1.5px at 12% 18%, #fff, transparent), radial-gradient(1px 1px at 27% 72%, #fff, transparent),
-      radial-gradient(1.5px 1.5px at 44% 9%, var(--gold-2), transparent), radial-gradient(1px 1px at 63% 41%, #fff, transparent),
-      radial-gradient(1.5px 1.5px at 78% 14%, #fff, transparent), radial-gradient(1px 1px at 91% 58%, var(--gold-2), transparent),
-      radial-gradient(1px 1px at 7% 88%, #fff, transparent), radial-gradient(1.5px 1.5px at 52% 93%, #fff, transparent);
-  }
+  body.locked { overflow:hidden; }
+  button { font:inherit; }
+  :focus-visible { outline:2px solid var(--gold); outline-offset:3px; }
 
+  /* ---------- language menu: globe + names in their own language ---------- */
+  .lang { position:relative; }
+  .lang-btn { display:flex; align-items:center; gap:8px; color:var(--ink); background:var(--card); border:1px solid var(--line); border-radius:999px; padding:8px 14px; cursor:pointer; font-size:14px; font-weight:600; transition:background .3s var(--ease); }
+  .lang-btn:hover { background:rgba(255,255,255,.08); }
+  .lang-btn svg { width:17px; height:17px; flex:none; }
+  .lang-btn .chev { width:14px; height:14px; opacity:.6; transition:transform .3s var(--ease); }
+  .lang-btn[aria-expanded="true"] .chev { transform:rotate(180deg); }
+  .lang-menu { position:absolute; top:calc(100% + 8px); inset-inline-end:0; min-width:170px; margin:0; padding:6px; list-style:none; z-index:60;
+    background:rgba(20,14,40,.92); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border:1px solid var(--line); border-radius:14px; box-shadow:0 20px 50px rgba(0,0,0,.5);
+    opacity:0; transform:translateY(-6px); pointer-events:none; transition:opacity .25s var(--ease), transform .25s var(--ease); }
+  .lang-menu.open { opacity:1; transform:none; pointer-events:auto; }
+  .lang-menu button { width:100%; display:flex; align-items:center; justify-content:space-between; gap:12px; text-align:start; color:var(--ink); background:none; border:0; border-radius:9px; padding:10px 12px; cursor:pointer; font-size:15px; }
+  .lang-menu button:hover { background:rgba(255,255,255,.07); }
+  .lang-menu button[aria-checked="true"]::after { content:""; width:7px; height:7px; border-radius:50%; background:var(--gold); box-shadow:0 0 10px var(--gold); }
+  .lang-menu [lang="ar"] { font-family:Cairo, sans-serif; }
+
+  /* ---------- the invitation ---------- */
+  #gate { position:fixed; inset:0; z-index:50; overflow:hidden; display:flex; flex-direction:column;
+    background:radial-gradient(600px 420px at 50% 36%, rgba(109,74,224,.30), transparent 70%), linear-gradient(#06030F, #0b0620 70%, #120a2a);
+    transition:opacity 1s var(--ease), visibility 1s; }
+  #gate.gone { opacity:0; visibility:hidden; }
+  #gate .top { display:flex; justify-content:flex-end; padding:18px 20px; position:relative; z-index:3; }
+  .invite { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:0 22px 160px; position:relative; z-index:2; }
+  .invite .who { font-size:clamp(28px, 7vw, 40px); font-weight:900; color:var(--gold-2); text-shadow:0 0 22px rgba(255,193,72,.55); margin:0; min-height:1em; }
+  .invite h1 { font-size:clamp(30px, 8vw, 48px); line-height:1.1; margin:2px 0 12px; font-weight:900; }
+  .invite .num { display:inline-block; font-size:12px; font-weight:800; letter-spacing:1.4px; text-transform:uppercase; color:var(--gold); border:1px solid rgba(255,193,72,.35); border-radius:999px; padding:5px 13px; margin-bottom:14px; }
+  html[lang="ar"] .invite .num { letter-spacing:0; text-transform:none; font-size:13px; }
+  .invite p { color:var(--muted); max-width:400px; margin:0 0 30px; }
+
+  .hold { position:relative; width:132px; height:132px; border:0; border-radius:50%; background:none; padding:0; cursor:pointer; touch-action:none; -webkit-user-select:none; user-select:none; -webkit-touch-callout:none; }
+  .hold .ring { position:absolute; inset:0; border-radius:50%;
+    background:conic-gradient(var(--gold) calc(var(--p, 0) * 1turn), rgba(255,255,255,.08) 0); -webkit-mask:radial-gradient(farthest-side, transparent calc(100% - 4px), #000 calc(100% - 3px)); mask:radial-gradient(farthest-side, transparent calc(100% - 4px), #000 calc(100% - 3px)); }
+  .hold img { position:absolute; inset:14px; width:104px; height:104px; border-radius:50%; object-fit:cover; filter:saturate(.6) brightness(.7); transition:filter .4s, transform .4s var(--ease), box-shadow .4s;
+    box-shadow:0 0 calc(20px + var(--p, 0) * 80px) rgba(255,193,72, calc(.15 + var(--p, 0) * .6)); transform:scale(calc(1 + var(--p, 0) * .06)); filter:saturate(calc(.6 + var(--p, 0) * .6)) brightness(calc(.7 + var(--p, 0) * .5)); }
+  .hold:not(.active) .ring { animation:pulse 2.6s ease-in-out infinite; }
+  @keyframes pulse { 0%,100% { box-shadow:0 0 0 0 rgba(255,193,72,.0); } 50% { box-shadow:0 0 0 10px rgba(255,193,72,.08); } }
+  .hint { margin-top:16px; font-size:14px; color:var(--muted); letter-spacing:.3px; }
+  .hold[disabled] { cursor:default; opacity:.45; }
+
+  /* the medina at night: its windows light up when your lamp does */
+  .city { position:absolute; left:0; right:0; bottom:0; height:190px; z-index:1; }
+  .city svg { width:100%; height:100%; display:block; }
+  .city .b { fill:#0d0822; }
+  .city .w { fill:#1c1536; transition:fill .6s, filter .6s; transition-delay:var(--d, 0s); }
+  #gate.lit .city .w { fill:var(--gold-2); filter:drop-shadow(0 0 4px rgba(255,193,72,.9)); }
+  #gate.lit .hold img { filter:none; box-shadow:0 0 120px rgba(255,193,72,.9), 0 0 220px rgba(169,140,255,.55); transform:scale(1.12); }
+  .welcome { position:absolute; left:0; right:0; top:44%; text-align:center; padding:0 22px; z-index:3; font-size:clamp(22px, 6vw, 30px); font-weight:900; color:var(--gold-2); text-shadow:0 0 24px rgba(255,193,72,.7);
+    opacity:0; transform:translateY(12px); transition:opacity .9s .9s var(--ease), transform .9s .9s var(--ease); pointer-events:none; }
+  #gate.lit .invite { opacity:0; transition:opacity .6s .3s; }
+  #gate.lit .welcome { opacity:1; transform:none; }
+
+  /* ---------- the page ---------- */
   header, main, footer { width:100%; max-width:1120px; margin:0 auto; padding:0 24px; position:relative; }
-  header { display:flex; align-items:center; justify-content:space-between; padding-top:22px; }
-  .brand { display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.2px; }
+  header { display:flex; align-items:center; justify-content:space-between; padding-top:20px; }
+  .brand { display:flex; align-items:center; gap:10px; font-weight:800; }
   .brand img { width:30px; height:30px; border-radius:8px; }
-  .langs { display:flex; gap:4px; background:var(--card); border:1px solid var(--line); border-radius:999px; padding:4px; }
-  .langs button {
-    font:inherit; font-size:13px; font-weight:700; color:var(--muted); background:none; border:0;
-    padding:6px 12px; border-radius:999px; cursor:pointer; transition:background .3s var(--ease), color .3s var(--ease);
-  }
-  .langs button[aria-pressed="true"] { background:var(--violet); color:#fff; }
-  .langs button:focus-visible, .btn:focus-visible { outline:2px solid var(--gold); outline-offset:3px; }
-
   main { flex:1; display:grid; grid-template-columns:1.1fr .9fr; grid-template-areas:'hero card' 'why card'; column-gap:56px; row-gap:32px; align-items:start; padding-top:40px; padding-bottom:40px; }
   .hero { grid-area:hero; } .why { grid-area:why; } .card { grid-area:card; align-self:center; }
-  .why h2 { font-size:13px; font-weight:800; letter-spacing:.8px; text-transform:uppercase; color:var(--gold); margin:0 0 10px; }
-  html[lang='ar'] .why h2 { text-transform:none; letter-spacing:0; font-size:15px; }
-  .mission { margin:0 0 22px; font-size:16.5px; max-width:520px; color:var(--ink); opacity:.92; }
-  .sticky { display:none; }
-  .lit, .litv { font-style:normal; font-weight:700; color:var(--gold-2); text-shadow:0 0 14px rgba(255,193,72,.55), 0 0 32px rgba(255,193,72,.25); }
-  .litv { color:#D9CCFF; text-shadow:0 0 14px rgba(169,140,255,.65), 0 0 32px rgba(109,74,224,.35); }
-  .pillars b { color:var(--gold-2); text-shadow:0 0 12px rgba(255,193,72,.45); }
-  .thanks { text-align:center; max-width:640px; margin:8px auto 28px; padding:0 24px; position:relative; }
-  .thanks p { margin:0 0 6px; font-size:17px; line-height:1.6; }
-  .thanks a { color:var(--violet-l); font-weight:700; text-decoration:none; border-bottom:1px solid rgba(169,140,255,.4); }
-  .thanks a:hover { border-color:var(--violet-l); }
-
-  .hero .logo {
-    width:132px; height:132px; border-radius:32px; display:block; margin-bottom:28px;
-    box-shadow:0 0 0 1px rgba(255,255,255,.06), 0 20px 70px rgba(109,74,224,.55), 0 0 120px rgba(255,193,72,.12);
-    animation:rise .9s var(--ease) both;
-  }
+  .hero .logo { width:120px; height:120px; border-radius:30px; display:block; margin-bottom:24px; box-shadow:0 0 0 1px rgba(255,255,255,.06), 0 20px 70px rgba(109,74,224,.55), 0 0 120px rgba(255,193,72,.12); }
   .pill { display:inline-block; font-size:12px; font-weight:700; letter-spacing:.6px; text-transform:uppercase; color:var(--gold); border:1px solid rgba(255,193,72,.35); border-radius:999px; padding:4px 12px; margin-bottom:16px; }
   html[lang="ar"] .pill { text-transform:none; letter-spacing:0; }
-  h1 { font-size:clamp(36px, 5vw, 60px); line-height:1.08; margin:0 0 16px; font-weight:900; letter-spacing:-.5px; }
-  h1 em { font-style:normal; background:linear-gradient(90deg, var(--violet-l), var(--gold)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  h1.main { font-size:clamp(36px, 5vw, 60px); line-height:1.08; margin:0 0 16px; font-weight:900; letter-spacing:-.5px; }
+  h1.main em { font-style:normal; background:linear-gradient(90deg, var(--violet-l), var(--gold)); -webkit-background-clip:text; background-clip:text; color:transparent; }
   .lead { color:var(--muted); font-size:18px; max-width:520px; margin:0; }
-  .pillars { list-style:none; padding:0; margin:0; display:grid; gap:12px; max-width:520px; }
+  .why h2 { font-size:13px; font-weight:800; letter-spacing:.8px; text-transform:uppercase; color:var(--gold); margin:0 0 10px; }
+  html[lang="ar"] .why h2 { text-transform:none; letter-spacing:0; font-size:15px; }
+  .mission { margin:0 0 22px; font-size:16.5px; max-width:520px; opacity:.92; }
+  .lit, .litv { font-style:normal; font-weight:700; color:var(--gold-2); text-shadow:0 0 14px rgba(255,193,72,.55), 0 0 32px rgba(255,193,72,.25); }
+  .litv { color:#D9CCFF; text-shadow:0 0 14px rgba(169,140,255,.65), 0 0 32px rgba(109,74,224,.35); }
+  .pillars { list-style:none; padding:0; margin:0; display:grid; gap:14px; max-width:520px; }
   .pillars li { display:flex; gap:14px; align-items:flex-start; }
-  .pillars b { display:block; }
+  .pillars b { display:block; color:var(--gold-2); text-shadow:0 0 12px rgba(255,193,72,.45); }
   .pillars span { color:var(--muted); font-size:15px; }
-  .dot { flex:none; width:34px; height:34px; border-radius:10px; display:grid; place-items:center; background:var(--card); border:1px solid var(--line); }
+  .dot { flex:none; width:36px; height:36px; border-radius:11px; display:grid; place-items:center; background:var(--card); border:1px solid var(--line); }
   .dot svg { width:18px; height:18px; }
-
-  .card {
-    background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
-    border:1px solid var(--line); border-radius:24px; padding:28px;
-    backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
-    box-shadow:0 30px 80px rgba(0,0,0,.45);
-    animation:rise .9s .12s var(--ease) both;
-  }
+  .card { background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03)); border:1px solid var(--line); border-radius:24px; padding:28px; backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); box-shadow:0 30px 80px rgba(0,0,0,.45); }
   .card h2 { margin:0 0 4px; font-size:20px; }
   .card .sub { margin:0 0 20px; color:var(--muted); font-size:14px; }
-  .btn {
-    display:flex; align-items:center; justify-content:center; gap:10px; width:100%;
-    background:var(--violet); color:#fff; text-decoration:none; font-weight:800; font-size:17px;
-    padding:16px 18px; border-radius:14px; transition:transform .3s var(--ease), box-shadow .3s var(--ease);
-    box-shadow:0 10px 30px rgba(109,74,224,.45);
-  }
+  .btn { display:flex; align-items:center; justify-content:center; gap:10px; width:100%; background:var(--violet); color:#fff; text-decoration:none; font-weight:800; font-size:17px; padding:16px 18px; border-radius:14px; transition:transform .3s var(--ease), box-shadow .3s var(--ease); box-shadow:0 10px 30px rgba(109,74,224,.45); }
   .btn:hover { transform:translateY(-2px); box-shadow:0 16px 40px rgba(109,74,224,.6); }
   .btn svg { width:20px; height:20px; }
   .meta { display:flex; justify-content:center; gap:14px; color:var(--muted); font-size:12.5px; margin:10px 0 22px; }
@@ -116,120 +129,86 @@
   ol li { margin:6px 0; }
   ol li::marker { color:var(--gold); font-weight:700; }
 
-  footer { display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; color:var(--muted); font-size:13px; padding-bottom:24px; }
-
-  /* invitation gate */
-  body.locked { overflow:hidden; }
-  #gate { position:fixed; inset:0; z-index:50; display:grid; place-items:center; padding:24px; overflow:hidden;
-    background:radial-gradient(700px 520px at 50% 38%, rgba(109,74,224,.38), transparent 70%), var(--bg);
-    transition:opacity .9s var(--ease), visibility .9s; }
-  #gate.gone { opacity:0; visibility:hidden; }
-  #gate .langs { position:absolute; top:22px; inset-inline-end:24px; }
-  .gate-in { width:100%; max-width:420px; text-align:center; position:relative; z-index:1; }
-  .gate-logo { width:120px; height:120px; border-radius:30px; display:block; margin:0 auto 26px; animation:breathe 3.2s ease-in-out infinite; }
-  @keyframes breathe { 0%,100% { box-shadow:0 0 40px rgba(109,74,224,.45); } 50% { box-shadow:0 0 90px rgba(169,140,255,.7), 0 0 150px rgba(255,193,72,.18); } }
-  .gate-in h1 { font-size:clamp(30px, 8vw, 42px); margin:12px 0 8px; }
-  .gate-copy p { color:var(--muted); margin:0 0 24px; }
-  .code { display:flex; gap:8px; }
-  .code input { flex:1; min-width:0; font:inherit; font-size:17px; font-weight:800; letter-spacing:3px; text-transform:uppercase; text-align:center;
-    color:var(--ink); background:rgba(255,255,255,.06); border:1px solid var(--line); border-radius:14px; padding:15px 12px; outline:none; transition:border-color .3s; }
-  .code input::placeholder { letter-spacing:1.5px; color:#6f6890; font-weight:600; }
-  .code input:focus { border-color:var(--violet-l); }
-  .code button { font:inherit; font-weight:800; color:#1b1206; background:linear-gradient(90deg, var(--gold), var(--gold-2)); border:0; border-radius:14px; padding:0 20px; cursor:pointer; box-shadow:0 8px 26px rgba(255,193,72,.35); }
-  .code button:disabled { opacity:.6; }
-  .code button:focus-visible, .code input:focus-visible { outline:2px solid var(--gold); outline-offset:3px; }
-  .err { min-height:22px; color:#FF9C85; font-size:14px; margin-top:10px; }
-  .shake { animation:shake .45s; }
-  @keyframes shake { 20%,60% { transform:translateX(-8px); } 40%,80% { transform:translateX(8px); } }
-  .chosen { position:absolute; left:0; right:0; top:150px; opacity:0; transform:translateY(10px); transition:opacity .8s .5s var(--ease), transform .8s .5s var(--ease);
-    font-size:22px; line-height:1.4; font-weight:800; color:var(--gold-2); text-shadow:0 0 18px rgba(255,193,72,.6); }
-  #gate.open .gate-copy, #gate.open form, #gate.open .err { opacity:0; transition:opacity .35s; pointer-events:none; }
-  #gate.open .chosen { opacity:1; transform:none; }
-  #gate.open .gate-logo { animation:flare 1.5s var(--ease) forwards; }
-  @keyframes flare { to { transform:scale(1.18); box-shadow:0 0 120px rgba(255,193,72,.9), 0 0 260px rgba(169,140,255,.65); } }
-  #gate::after { content:""; position:absolute; left:50%; top:calc(50% - 120px); width:40px; height:40px; margin:-20px; border-radius:50%;
-    background:radial-gradient(circle, rgba(255,231,168,.95), rgba(255,193,72,.35) 40%, transparent 70%); transform:scale(0); opacity:0; pointer-events:none; }
-  #gate.open::after { animation:burst 1.8s 1.6s var(--ease) forwards; }
-  @keyframes burst { 0% { transform:scale(0); opacity:1; } 100% { transform:scale(70); opacity:0; } }
-
-  /* the street of lamps */
+  .thanks { text-align:center; max-width:640px; margin:8px auto 28px; padding:0 24px; }
   .street { display:flex; align-items:flex-end; justify-content:center; gap:clamp(12px, 4vw, 34px); margin:8px auto 22px; }
   .lamp { display:flex; flex-direction:column; align-items:center; }
   .lamp i { width:10px; height:10px; border-radius:50%; background:#2b2440; transition:background .7s, box-shadow .7s; transition-delay:calc(var(--d) * .22s); }
   .lamp b { width:2px; height:46px; background:linear-gradient(#3b3355, transparent); }
   .lamp.you i { width:16px; height:16px; }
   .lamp.you b { height:64px; }
-  .lamp.you span { font-size:11px; font-weight:800; color:var(--gold); margin-top:4px; opacity:0; transition:opacity .7s; transition-delay:calc(var(--d) * .22s); }
+  .lamp.you span { font-size:11px; font-weight:800; color:var(--gold); margin-top:4px; opacity:0; transition:opacity .7s; transition-delay:calc(var(--d) * .22s); max-width:90px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .street.on .lamp i { background:var(--gold-2); box-shadow:0 0 10px var(--gold), 0 0 28px rgba(255,193,72,.55); }
   .street.on .lamp.you i { box-shadow:0 0 14px var(--gold), 0 0 44px rgba(255,193,72,.8), 0 0 90px rgba(169,140,255,.4); }
   .street.on .lamp.you span { opacity:1; }
-  .thanks .t1 { font-size:clamp(19px, 2.6vw, 24px); font-weight:800; line-height:1.4; margin-bottom:10px; }
+  .thanks .t1 { font-size:clamp(19px, 2.6vw, 24px); font-weight:800; line-height:1.4; margin:0 0 10px; }
   .thanks .t2 { color:var(--muted); font-size:16px; margin:0 0 20px; }
   .send { display:inline-flex; align-items:center; gap:8px; color:var(--gold-2); text-decoration:none; font-weight:800; border:1px solid rgba(255,193,72,.45); border-radius:999px; padding:11px 20px; transition:background .3s var(--ease), box-shadow .3s var(--ease); }
   .send:hover { background:rgba(255,193,72,.1); box-shadow:0 0 24px rgba(255,193,72,.3); }
   .send svg { width:18px; height:18px; }
-
-  @keyframes rise { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:none; } }
-  @media (prefers-reduced-motion: reduce) { * { animation:none !important; transition:none !important; } }
+  footer { display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; color:var(--muted); font-size:13px; padding-bottom:24px; }
+  .sticky { display:none; }
 
   @media (max-width: 860px) {
     main { grid-template-columns:1fr; grid-template-areas:'hero' 'card' 'why'; row-gap:28px; padding-top:20px; padding-bottom:110px; }
-    .hero .logo { width:76px; height:76px; border-radius:20px; margin-bottom:16px; }
-    h1 { font-size:clamp(32px, 9vw, 40px); }
+    .hero .logo { width:72px; height:72px; border-radius:19px; margin-bottom:16px; }
+    h1.main { font-size:clamp(32px, 9vw, 40px); }
     .lead { font-size:16px; }
-    .row { display:none; }               /* on the phone itself, the QR is useless */
+    .row { display:none; }
     .card { padding:22px; border-radius:20px; }
-    .sticky {
-      display:block; position:fixed; left:0; right:0; bottom:0; z-index:10;
-      padding:12px 16px calc(12px + env(safe-area-inset-bottom));
-      background:linear-gradient(180deg, rgba(6,3,15,0), rgba(6,3,15,.92) 35%);
-      transition:transform .35s var(--ease), opacity .35s var(--ease);
-    }
+    .sticky { display:block; position:fixed; left:0; right:0; bottom:0; z-index:10; padding:12px 16px calc(12px + env(safe-area-inset-bottom));
+      background:linear-gradient(180deg, rgba(6,3,15,0), rgba(6,3,15,.92) 35%); transition:transform .35s var(--ease), opacity .35s var(--ease); }
     .sticky.hide { transform:translateY(110%); opacity:0; pointer-events:none; }
+    .city { height:150px; }
+    .invite { padding-bottom:130px; }
   }
-  @media (max-width: 420px) {
-    header, main, footer { padding-left:16px; padding-right:16px; }
-    .card { padding:20px; }
-  }
+  @media (max-width: 420px) { header, main, footer { padding-left:16px; padding-right:16px; } }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation:none !important; transition-duration:.01s !important; transition-delay:0s !important; } }
 </style>
 </head>
 <body class="locked">
-<div id="gate" role="dialog" aria-modal="true" aria-labelledby="gTitle">
-  <nav class="langs" aria-label="Language">
-    <button type="button" data-lang="ar">ع</button>
-    <button type="button" data-lang="fr">FR</button>
-    <button type="button" data-lang="en">EN</button>
-  </nav>
-  <div class="gate-in">
-    <img class="gate-logo" src="yalla.png" alt="Yalla" width="120" height="120">
-    <div class="gate-copy">
-      <span class="pill" data-t="pill"></span>
-      <h1 id="gTitle" data-t="gTitle"></h1>
-      <p data-t="gSub"></p>
-    </div>
-    <form class="code" id="codeForm" autocomplete="off">
-      <input id="code" name="code" data-tp="gPh" autocapitalize="characters" spellcheck="false" aria-labelledby="gTitle" required>
-      <button type="submit" data-t="gBtn"></button>
-    </form>
-    <div class="err" id="err" role="alert"></div>
-    <div class="chosen" data-t="chosen"></div>
+
+<template id="langTpl">
+  <div class="lang">
+    <button type="button" class="lang-btn" aria-haspopup="menu" aria-expanded="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg>
+      <span class="lang-cur"></span>
+      <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+    </button>
+    <ul class="lang-menu" role="menu">
+      <li role="none"><button type="button" role="menuitemradio" data-lang="ar" lang="ar" dir="rtl">العربية</button></li>
+      <li role="none"><button type="button" role="menuitemradio" data-lang="fr" lang="fr">Français</button></li>
+      <li role="none"><button type="button" role="menuitemradio" data-lang="en" lang="en">English</button></li>
+    </ul>
   </div>
+</template>
+
+<div id="gate" role="dialog" aria-modal="true" aria-labelledby="gTitle">
+  <div class="top" data-lang-slot></div>
+  <div class="invite">
+    <p class="who" id="who"></p>
+    <h1 id="gTitle" data-t="gTitle"></h1>
+    <span class="num" id="num" hidden></span>
+    <p data-t="gSub" id="gSub"></p>
+    <button type="button" class="hold" id="hold" aria-describedby="hint">
+      <span class="ring"></span>
+      <img src="yalla.png" alt="">
+    </button>
+    <div class="hint" id="hint" data-t="hint"></div>
+  </div>
+  <div class="welcome" id="welcome" data-t="welcome"></div>
+  <div class="city" aria-hidden="true"><svg id="city" viewBox="0 0 1200 190" preserveAspectRatio="xMidYMax slice"></svg></div>
 </div>
 
 <header>
   <div class="brand"><img src="yalla.png" alt=""><span>Yalla</span></div>
-  <nav class="langs" aria-label="Language">
-    <button type="button" data-lang="ar">ع</button>
-    <button type="button" data-lang="fr">FR</button>
-    <button type="button" data-lang="en">EN</button>
-  </nav>
+  <div data-lang-slot></div>
 </header>
 
 <main>
   <section class="hero">
-    <img class="logo" src="yalla.png" alt="Yalla" width="132" height="132">
+    <img class="logo" src="yalla.png" alt="Yalla" width="120" height="120">
     <span class="pill" data-t="pill"></span>
-    <h1 data-t="h1"></h1>
+    <h1 class="main" data-t="h1"></h1>
     <p class="lead" data-t="lead"></p>
   </section>
 
@@ -279,162 +258,209 @@
 
 <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js" integrity="sha384-8FWZA6BGMXhsfO+BLtrJK0We6gg5o1JyO8xQm6peWDEUs17ACA5ziE/NIAkl9z2k" crossorigin="anonymous"></script>
 <script>
+const L = (s) => `<i class=lit>${s}</i>`, V = (s) => `<i class=litv>${s}</i>`;
 const T = {
   en: {
+    name: 'English',
+    gTitle: 'you have been chosen.', gTitleAnon: 'You have been chosen.',
+    gSub: 'One of the very first people to see Yalla, before the rest of Tunisia.',
+    num: 'Invitation n° {n}', hint: 'Press and hold the light',
+    welcome: 'Welcome among the first lights.',
+    lockedTitle: 'By invitation only.', lockedSub: 'Yalla is in private beta. Ask the person who invited you for your personal link.',
     pill: 'Private beta · by invitation',
     h1: 'Get out with <em>your people.</em>',
-    lead: "A Tunisian app for people who would rather <i class=lit>act</i> than complain: plans with <i class=litv>your people</i>, <i class=lit>one promise</i> to yourself, and a street you can see <i class=lit>getting better</i>.",
+    lead: `A Tunisian app for people who would rather ${L('act')} than complain: plans with ${V('your people')}, ${L('one promise')} to yourself, and a street you can see ${L('getting better')}.`,
     whyTitle: 'Why Yalla',
-    mission: '<i class=lit>Tunisia gets better</i> when each of us changes a little: <i class=litv>how we think</i>, how we <i class=litv>show up for each other</i>, how we <i class=litv>care for our street</i>. Yalla turns that into <i class=lit>small, real steps</i> you take with the people around you, and shows you <i class=lit>the difference</i>.',
+    mission: `${L('Tunisia gets better')} when each of us changes a little: ${V('how we think')}, how we ${V('show up for each other')}, how we ${V('care for our street')}. Yalla turns that into ${L('small, real steps')} you take with the people around you, and shows you ${L('the difference')}.`,
     p1: 'Lamma', p1d: 'Plans with your people. Invite them over WhatsApp in one tap.',
     p2: 'One promise', p2d: 'A small daily path and a streak that keeps you going.',
     p3: 'Before / After', p3d: 'Fix something on your street and show the difference.',
-    dlTitle: 'Install Yalla', dlSub: 'You are among the first to try it.',
+    dlTitle: 'Install Yalla', dlSub: 'Your lamp is lit. Now light the app.',
     btn: 'Download for Android', ios: 'iPhone: soon',
     qr: '<b>On a computer?</b> Scan with your Android phone to open this page there.',
     s1: 'Tap “Download for Android”, then open the file.',
     s2: 'If Play Protect warns you: “More details” → “Install anyway”. It does this for every app outside the Play Store.',
     s3: 'Sign in with your email and enter the code you receive.',
-    thanks1: 'You are not just testing an app. You are <i class=lit>lighting the first lamps</i> of a better street.',
+    thanks1: `You are not just testing an app. You are ${L('lighting the first lamps')} of a better street.`,
     thanks2: 'Every bug you find and every idea you share makes the next light brighter.',
-    send: 'Send us a light',
-    you: 'you',
-    gTitle: 'You have been invited.',
-    gSub: 'Enter the code from your invitation to light your lamp.',
-    gPh: 'Invitation code',
-    gBtn: 'Light it up',
-    gErr: 'This code does not open the door. Check your invitation.',
-    chosen: 'Welcome. You were chosen<br>to light the first lamps.',
-    foot: 'Private beta'
+    send: 'Send us a light', you: 'you', foot: 'Private beta'
   },
   fr: {
+    name: 'Français',
+    gTitle: 'vous avez été choisi·e.', gTitleAnon: 'Vous avez été choisi·e.',
+    gSub: 'Parmi les toutes premières personnes à découvrir Yalla, avant le reste de la Tunisie.',
+    num: 'Invitation n° {n}', hint: 'Maintenez la lumière appuyée',
+    welcome: 'Bienvenue parmi les premières lumières.',
+    lockedTitle: 'Sur invitation uniquement.', lockedSub: 'Yalla est en bêta privée. Demandez votre lien personnel à la personne qui vous a invité·e.',
     pill: 'Bêta privée · sur invitation',
     h1: 'Sortez avec <em>les vôtres.</em>',
-    lead: "L'application tunisienne pour ceux qui préfèrent <i class=lit>agir</i> plutôt que se plaindre : des sorties avec <i class=litv>les vôtres</i>, <i class=lit>une promesse</i> envers vous-même, et une rue qui <i class=lit>s'améliore</i> sous vos yeux.",
+    lead: `L'application tunisienne pour ceux qui préfèrent ${L('agir')} plutôt que se plaindre : des sorties avec ${V('les vôtres')}, ${L('une promesse')} envers vous-même, et une rue qui ${L("s'améliore")} sous vos yeux.`,
     whyTitle: 'Pourquoi Yalla',
-    mission: "<i class=lit>La Tunisie s'améliore</i> quand chacun de nous change un peu : <i class=litv>notre façon de penser</i>, <i class=litv>d'être là les uns pour les autres</i>, <i class=litv>de prendre soin de notre rue</i>. Yalla transforme cela en <i class=lit>petits pas concrets</i>, faits avec les gens autour de vous, et vous montre <i class=lit>la différence</i>.",
+    mission: `${L("La Tunisie s'améliore")} quand chacun de nous change un peu : ${V('notre façon de penser')}, ${V("d'être là les uns pour les autres")}, ${V('de prendre soin de notre rue')}. Yalla transforme cela en ${L('petits pas concrets')}, faits avec les gens autour de vous, et vous montre ${L('la différence')}.`,
     p1: 'Lamma', p1d: 'Des sorties avec vos proches, invités par WhatsApp en un geste.',
     p2: 'Une promesse', p2d: 'Un petit chemin quotidien et une série qui vous porte.',
     p3: 'Avant / Après', p3d: 'Améliorez votre rue et montrez la différence.',
-    dlTitle: 'Installer Yalla', dlSub: 'Vous faites partie des premiers à l’essayer.',
+    dlTitle: 'Installer Yalla', dlSub: 'Votre lumière est allumée. À l’application maintenant.',
     btn: 'Télécharger pour Android', ios: 'iPhone : bientôt',
     qr: '<b>Sur un ordinateur ?</b> Scannez avec votre téléphone Android pour ouvrir cette page.',
     s1: 'Touchez « Télécharger pour Android », puis ouvrez le fichier.',
     s2: 'Si Play Protect vous avertit : « Plus de détails » → « Installer quand même ». C’est le cas pour toute application hors Play Store.',
     s3: 'Connectez-vous avec votre e-mail et saisissez le code reçu.',
-    thanks1: "Vous ne testez pas seulement une application. Vous <i class=lit>allumez les premières lumières</i> d'une rue meilleure.",
+    thanks1: `Vous ne testez pas seulement une application. Vous ${L('allumez les premières lumières')} d'une rue meilleure.`,
     thanks2: 'Chaque bug trouvé, chaque idée partagée rend la prochaine lumière plus forte.',
-    send: 'Envoyez-nous une lumière',
-    you: 'vous',
-    gTitle: 'Vous êtes invité·e.',
-    gSub: 'Entrez le code de votre invitation pour allumer votre lumière.',
-    gPh: 'Code d’invitation',
-    gBtn: 'Allumer',
-    gErr: 'Ce code n’ouvre pas la porte. Vérifiez votre invitation.',
-    chosen: 'Bienvenue. Vous avez été choisi·e<br>pour allumer les premières lumières.',
-    foot: 'Bêta privée'
+    send: 'Envoyez-nous une lumière', you: 'vous', foot: 'Bêta privée'
   },
   ar: {
+    name: 'العربية',
+    gTitle: 'وقع عليك الاختيار.', gTitleAnon: 'وقع عليك الاختيار.',
+    gSub: 'من أوائل من يرون يلّا، قبل بقية تونس.',
+    num: 'الدعوة رقم {n}', hint: 'اضغط مطوّلًا على النور',
+    welcome: 'أهلًا بك بين الأنوار الأولى.',
+    lockedTitle: 'بدعوة فقط.', lockedSub: 'يلّا في نسخة تجريبية خاصة. اطلب رابطك الشخصي ممّن دعاك.',
     pill: 'نسخة تجريبية خاصة · بدعوة',
     h1: 'يلّا، اخرج مع <em>أحبّتك.</em>',
-    lead: 'تطبيق تونسي لمن يفضّل <i class=lit>الفعل</i> على الشكوى: خرجات مع <i class=litv>أحبّتك</i>، و<i class=lit>وعد واحد</i> لنفسك، وشارع تراه <i class=lit>يتحسّن</i>.',
+    lead: `تطبيق تونسي لمن يفضّل ${L('الفعل')} على الشكوى: خرجات مع ${V('أحبّتك')}، و${L('وعد واحد')} لنفسك، وشارع تراه ${L('يتحسّن')}.`,
     whyTitle: 'لماذا يلّا',
-    mission: '<i class=lit>تتحسّن تونس</i> حين يتغيّر كلّ واحد منّا قليلًا: <i class=litv>في طريقة تفكيرنا</i>، <i class=litv>وفي وقوفنا إلى جانب بعضنا</i>، <i class=litv>وفي عنايتنا بشارعنا</i>. يحوّل يلّا ذلك إلى <i class=lit>خطوات صغيرة وحقيقية</i> تخطوها مع من حولك، ويُريك <i class=lit>الفرق</i>.',
+    mission: `${L('تتحسّن تونس')} حين يتغيّر كلّ واحد منّا قليلًا: ${V('في طريقة تفكيرنا')}، ${V('وفي وقوفنا إلى جانب بعضنا')}، ${V('وفي عنايتنا بشارعنا')}. يحوّل يلّا ذلك إلى ${L('خطوات صغيرة وحقيقية')} تخطوها مع من حولك، ويُريك ${L('الفرق')}.`,
     p1: 'لمّة', p1d: 'خطط مع أحبّتك، والدعوة عبر واتساب بلمسة واحدة.',
     p2: 'وعد واحد', p2d: 'مسار يومي صغير وسلسلة أيام تدفعك إلى الاستمرار.',
     p3: 'قبل / بعد', p3d: 'أصلح شيئًا في شارعك وأظهر الفرق.',
-    dlTitle: 'ثبّت يلّا', dlSub: 'أنت من أوائل من يجرّبه.',
+    dlTitle: 'ثبّت يلّا', dlSub: 'نورك مضاء. والآن دور التطبيق.',
     btn: 'تحميل لأندرويد', ios: 'آيفون: قريبًا',
     qr: '<b>على الحاسوب؟</b> امسح الرمز بهاتف أندرويد لفتح هذه الصفحة عليه.',
     s1: 'اضغط «تحميل لأندرويد» ثم افتح الملف.',
     s2: 'إذا ظهر تحذير Play Protect: «مزيد من التفاصيل» ← «التثبيت على أي حال». يظهر هذا لكل تطبيق من خارج متجر Play.',
     s3: 'سجّل الدخول ببريدك الإلكتروني وأدخل الرمز الذي يصلك.',
-    thanks1: 'أنت لا تجرّب تطبيقًا فحسب، بل <i class=lit>تُضيء أولى أنوار</i> شارعٍ أفضل.',
+    thanks1: `أنت لا تجرّب تطبيقًا فحسب، بل ${L('تُضيء أولى أنوار')} شارعٍ أفضل.`,
     thanks2: 'كلّ خلل تكتشفه وكلّ فكرة تشاركها تجعل النور التالي أقوى.',
-    send: 'أرسل لنا نورًا',
-    you: 'أنت',
-    gTitle: 'لقد تمّت دعوتك.',
-    gSub: 'أدخل رمز دعوتك لتُضيء نورك.',
-    gPh: 'رمز الدعوة',
-    gBtn: 'أضِئ',
-    gErr: 'هذا الرمز لا يفتح الباب. تحقّق من دعوتك.',
-    chosen: 'أهلًا بك. وقع عليك الاختيار<br>لتُضيء أولى الأنوار.',
-    foot: 'نسخة تجريبية خاصة'
+    send: 'أرسل لنا نورًا', you: 'أنت', foot: 'نسخة تجريبية خاصة'
   }
 };
 
-function setLang(l) {
-  const t = T[l] || T.en;
-  document.documentElement.lang = l;
-  document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
-  document.querySelectorAll('[data-t]').forEach(el => { el.innerHTML = t[el.dataset.t]; });
-  document.querySelectorAll('[data-tp]').forEach(el => { el.placeholder = t[el.dataset.tp]; });
-  const you = document.querySelector('.lamp.you span'); if (you) you.textContent = t.you;
-  document.querySelectorAll('.langs button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === l)));
-  try { localStorage.setItem('yalla-lang', l); } catch (e) {}
-}
-document.querySelectorAll('.langs button').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
+// ---------- the invitation, read from the link fragment (never sent to any server) ----------
+const frag = new URLSearchParams(location.hash.slice(1));
+let invite = { k: frag.get('k'), to: (frag.get('to') || '').slice(0, 40), n: (frag.get('n') || '').replace(/\D/g, '').slice(0, 4) };
+try {
+  if (invite.k) localStorage.setItem('yalla-invite', JSON.stringify(invite));
+  else invite = JSON.parse(localStorage.getItem('yalla-invite') || 'null') || invite;
+} catch (e) {}
+if (location.hash) history.replaceState(null, '', location.pathname);
 
-let saved = null;
-try { saved = localStorage.getItem('yalla-lang'); } catch (e) {}
+let lang = 'en';
+function setLang(l) {
+  lang = T[l] ? l : 'en';
+  const t = T[lang];
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  document.querySelectorAll('[data-t]').forEach((el) => { el.innerHTML = t[el.dataset.t]; });
+  document.querySelectorAll('.lang-cur').forEach((el) => { el.textContent = t.name; });
+  document.querySelectorAll('[data-lang]').forEach((b) => b.setAttribute('aria-checked', String(b.dataset.lang === lang)));
+  // the guest's own words go in as text, never as HTML
+  document.getElementById('who').textContent = invite.to || '';
+  if (invite.k) {
+    document.getElementById('gTitle').textContent = invite.to ? t.gTitle : t.gTitleAnon;
+  } else {
+    document.getElementById('gTitle').textContent = t.lockedTitle;
+    document.getElementById('gSub').textContent = t.lockedSub;
+  }
+  const num = document.getElementById('num');
+  num.hidden = !(invite.k && invite.n);
+  num.textContent = t.num.replace('{n}', invite.n.padStart(2, '0'));
+  const you = document.querySelector('.lamp.you span'); if (you) you.textContent = invite.to || t.you;
+  try { localStorage.setItem('yalla-lang', lang); } catch (e) {}
+}
+
+// language menus (header + invitation)
+const tpl = document.getElementById('langTpl');
+document.querySelectorAll('[data-lang-slot]').forEach((slot) => slot.appendChild(tpl.content.cloneNode(true)));
+document.querySelectorAll('.lang').forEach((box) => {
+  const btn = box.querySelector('.lang-btn'), menu = box.querySelector('.lang-menu');
+  const close = () => { menu.classList.remove('open'); btn.setAttribute('aria-expanded', 'false'); };
+  btn.addEventListener('click', (e) => { e.stopPropagation(); const open = !menu.classList.contains('open'); menu.classList.toggle('open', open); btn.setAttribute('aria-expanded', String(open)); if (open) menu.querySelector('[aria-checked="true"]')?.focus(); });
+  menu.addEventListener('click', (e) => { const b = e.target.closest('[data-lang]'); if (b) { setLang(b.dataset.lang); close(); btn.focus(); } });
+  menu.addEventListener('keydown', (e) => {
+    const items = [...menu.querySelectorAll('[data-lang]')], i = items.indexOf(document.activeElement);
+    if (e.key === 'ArrowDown') { e.preventDefault(); items[(i + 1) % items.length].focus(); }
+    if (e.key === 'ArrowUp') { e.preventDefault(); items[(i - 1 + items.length) % items.length].focus(); }
+    if (e.key === 'Escape') { close(); btn.focus(); }
+  });
+  document.addEventListener('click', close);
+});
+
+let saved = null; try { saved = localStorage.getItem('yalla-lang'); } catch (e) {}
 const nav = (navigator.language || 'en').slice(0, 2);
 setLang(saved || (T[nav] ? nav : 'en'));
 
-// The APK link is sealed with the invitation code (PBKDF2 -> AES-GCM): without the code, the source shows nothing.
-const SEALED = {"s":"iMqQs1zgCNTROFZudmzM3w==","i":"Tl1MmYO8i/sasArn","c":"L6FPc50o1P7dR+dvJeBSAcF/uW6weUod8Iqd/14ipaHcbkO76RontHnPzoGUqzv4/Qq+BVwWJJPaDhaXOq4aysA/JybIhj4cCLIpazqnqQOo3TdEWT+gFIrwJJhg4kU6zq5vDg9IvlE="};
-const b64 = (s) => Uint8Array.from(atob(s), (ch) => ch.charCodeAt(0));
-async function openSeal(code) {
-  const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(code.trim().toUpperCase()), 'PBKDF2', false, ['deriveKey']);
-  const key = await crypto.subtle.deriveKey({ name: 'PBKDF2', salt: b64(SEALED.s), iterations: 200000, hash: 'SHA-256' }, base, { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
-  return JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({ name: 'AES-GCM', iv: b64(SEALED.i) }, key, b64(SEALED.c))));
-}
-const gate = document.getElementById('gate'), form = document.getElementById('codeForm'), input = document.getElementById('code'), err = document.getElementById('err');
-function unlock(data, animate) {
-  document.querySelectorAll('[data-apk]').forEach((a) => { a.href = data.apk; });
-  const done = () => { gate.classList.add('gone'); document.body.classList.remove('locked'); };
-  if (!animate) return done();
-  gate.classList.add('open');
-  setTimeout(done, 3300);
-}
-form.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const btn = form.querySelector('button'); btn.disabled = true; err.textContent = '';
-  try {
-    const data = await openSeal(input.value);
-    try { localStorage.setItem('yalla-invite', input.value.trim().toUpperCase()); } catch (x) {}
-    unlock(data, true);
-  } catch (x) {
-    err.textContent = T[document.documentElement.lang].gErr;
-    form.classList.remove('shake'); void form.offsetWidth; form.classList.add('shake');
-    btn.disabled = false; input.select();
+// ---------- the medina skyline ----------
+(function city() {
+  const svg = document.getElementById('city'); let x = 0, out = '', wins = [];
+  const rnd = (() => { let s = 7; return () => (s = (s * 9301 + 49297) % 233280) / 233280; })();
+  while (x < 1200) {
+    const w = 46 + rnd() * 70, h = 50 + rnd() * 90, top = 190 - h;
+    out += `<rect class="b" x="${x}" y="${top}" width="${w + 1}" height="${h}"/>`;
+    const r = rnd();
+    if (r < .22) out += `<path class="b" d="M${x + w * .2} ${top} a${w * .3} ${w * .3} 0 0 1 ${w * .6} 0z"/>`;            // dome
+    else if (r < .3) out += `<rect class="b" x="${x + w * .38}" y="${top - 70}" width="${w * .24}" height="70"/><path class="b" d="M${x + w * .38} ${top - 70} l${w * .12} -16 l${w * .12} 16z"/>`; // minaret
+    for (let wy = top + 14; wy < 176; wy += 22) for (let wx = x + 9; wx < x + w - 12; wx += 18) if (rnd() > .35) wins.push([wx, wy]);
+    x += w + 2;
   }
-});
-// An invitation link can carry the code (…/yalla-tn/#invite=CODE): it fills in, the guest still taps.
-const fromLink = location.hash.match(/invite=([^&]+)/);
-if (fromLink) { input.value = decodeURIComponent(fromLink[1]); history.replaceState(null, '', location.pathname); }
-(async () => {
-  let saved = null; try { saved = localStorage.getItem('yalla-invite'); } catch (x) {}
-  if (saved) { try { unlock(await openSeal(saved), false); return; } catch (x) {} }
-  if (!fromLink) input.focus();
+  out += wins.map(([wx, wy]) => `<rect class="w" x="${wx}" y="${wy}" width="7" height="10" rx="1.5" style="--d:${(Math.abs(wx - 600) / 600 * 1.2 + rnd() * .3).toFixed(2)}s"/>`).join('');
+  svg.innerHTML = out;
 })();
 
-// the street: eight lamps, the last one is yours; they light up when you reach them
+// ---------- the sealed download link: opens only with the key from a personal invitation ----------
+const b64 = (s) => Uint8Array.from(atob(s), (ch) => ch.charCodeAt(0));
+async function openSeal(k) {
+  const sealed = await (await fetch('sealed.json', { cache: 'no-store' })).json();
+  const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(k), 'PBKDF2', false, ['deriveKey']);
+  const key = await crypto.subtle.deriveKey({ name: 'PBKDF2', salt: b64(sealed.s), iterations: 200000, hash: 'SHA-256' }, base, { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
+  return JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({ name: 'AES-GCM', iv: b64(sealed.i) }, key, b64(sealed.c))));
+}
+const gate = document.getElementById('gate'), hold = document.getElementById('hold');
+const enter = () => { gate.classList.add('gone'); document.body.classList.remove('locked'); };
+let opened = null;
+if (!invite.k) { hold.disabled = true; document.getElementById('hint').hidden = true; }
+else openSeal(invite.k).then((d) => { opened = d; document.querySelectorAll('[data-apk]').forEach((a) => { a.href = d.apk; }); })
+  .catch(() => { invite.k = null; hold.disabled = true; document.getElementById('hint').hidden = true; setLang(lang); });
+
+// returning guests who already lit their lamp walk straight in
+try { if (invite.k && localStorage.getItem('yalla-lit') === '1') enter(); } catch (e) {}
+
+// press and hold (touch, mouse, keyboard): the ring fills, the lamp ignites, the city lights up
+const HOLD_MS = matchMedia('(prefers-reduced-motion: reduce)').matches ? 1 : 1400;
+let t0 = 0, raf = 0, done = false;
+const setP = (p) => hold.style.setProperty('--p', p.toFixed(3));
+function tick(now) {
+  const p = Math.min(1, (now - t0) / HOLD_MS); setP(p);
+  if (p < 1) { raf = requestAnimationFrame(tick); return; }
+  done = true; hold.classList.remove('active'); gate.classList.add('lit');
+  try { localStorage.setItem('yalla-lit', '1'); } catch (e) {}
+  setTimeout(enter, 3400);
+}
+function start(e) { if (done || hold.disabled) return; e.preventDefault(); hold.classList.add('active'); t0 = performance.now(); raf = requestAnimationFrame(tick); }
+function stop() { if (done) return; cancelAnimationFrame(raf); hold.classList.remove('active');
+  const from = parseFloat(hold.style.getPropertyValue('--p') || 0), s = performance.now();
+  (function back(now) { const p = Math.max(0, from - (now - s) / 400); setP(p); if (p > 0 && !done && !hold.classList.contains('active')) requestAnimationFrame(back); })(s); }
+hold.addEventListener('pointerdown', start);
+['pointerup', 'pointerleave', 'pointercancel'].forEach((ev) => hold.addEventListener(ev, stop));
+hold.addEventListener('keydown', (e) => { if ((e.key === ' ' || e.key === 'Enter') && !e.repeat) start(e); });
+hold.addEventListener('keyup', (e) => { if (e.key === ' ' || e.key === 'Enter') stop(); });
+hold.addEventListener('contextmenu', (e) => e.preventDefault());
+
+// ---------- the street: eight lamps, the last one is the guest's ----------
 const street = document.getElementById('street');
 street.innerHTML = Array.from({ length: 9 }, (_, k) => `<div class="lamp${k === 8 ? ' you' : ''}" style="--d:${k}"><i></i><b></b>${k === 8 ? '<span></span>' : ''}</div>`).join('');
-setLang(document.documentElement.lang);
+setLang(lang);
 if ('IntersectionObserver' in window) {
   new IntersectionObserver(([e], o) => { if (e.isIntersecting) { street.classList.add('on'); o.disconnect(); } }, { threshold: .6 }).observe(street);
+  const bar = document.getElementById('sticky');
+  new IntersectionObserver(([e]) => bar.classList.toggle('hide', e.isIntersecting)).observe(document.getElementById('download'));
 } else street.classList.add('on');
 
-const bar = document.getElementById('sticky');
-if ('IntersectionObserver' in window) {
-  new IntersectionObserver(([e]) => bar.classList.toggle('hide', e.isIntersecting)).observe(document.getElementById('download'));
-}
-
 try {
-  const qr = qrcode(0, 'M');
-  qr.addData(location.origin + location.pathname);
-  qr.make();
+  // on a computer the guest scans their OWN invitation onto their phone
+  const mine = invite.k ? '#' + new URLSearchParams({ k: invite.k, to: invite.to, n: invite.n }).toString() : '';
+  const qr = qrcode(0, 'M'); qr.addData(location.origin + location.pathname + mine); qr.make();
   document.getElementById('qr').innerHTML = qr.createSvgTag({ cellSize: 4, margin: 0, scalable: true });
 } catch (e) { document.querySelector('.row').style.display = 'none'; }
 </script>
