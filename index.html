@@ -339,7 +339,7 @@ const T = {
 
 // ---------- the invitation, read from the link fragment (never sent to any server) ----------
 const frag = new URLSearchParams(location.hash.slice(1));
-let invite = { k: frag.get('k'), to: (frag.get('to') || '').slice(0, 40), n: (frag.get('n') || '').replace(/\D/g, '').slice(0, 4) };
+let invite = { i: frag.get('i'), k: frag.get('k'), to: (frag.get('to') || '').slice(0, 40), n: (frag.get('n') || '').replace(/\D/g, '').slice(0, 4) };
 try {
   if (invite.k) localStorage.setItem('yalla-invite', JSON.stringify(invite));
   else invite = JSON.parse(localStorage.getItem('yalla-invite') || 'null') || invite;
@@ -410,8 +410,10 @@ setLang(saved || (T[nav] ? nav : 'en'));
 
 // ---------- the sealed download link: opens only with the key from a personal invitation ----------
 const b64 = (s) => Uint8Array.from(atob(s), (ch) => ch.charCodeAt(0));
-async function openSeal(k) {
-  const sealed = await (await fetch('sealed.json', { cache: 'no-store' })).json();
+async function openSeal(id, k) {
+  const all = await (await fetch('sealed.json', { cache: 'no-store' })).json();
+  const sealed = all.e && all.e[id];            // no entry: the invitation was revoked
+  if (!sealed) throw new Error('inactive');
   const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(k), 'PBKDF2', false, ['deriveKey']);
   const key = await crypto.subtle.deriveKey({ name: 'PBKDF2', salt: b64(sealed.s), iterations: 200000, hash: 'SHA-256' }, base, { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
   return JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({ name: 'AES-GCM', iv: b64(sealed.i) }, key, b64(sealed.c))));
@@ -420,11 +422,15 @@ const gate = document.getElementById('gate'), hold = document.getElementById('ho
 const enter = () => { gate.classList.add('gone'); document.body.classList.remove('locked'); };
 let opened = null;
 if (!invite.k) { hold.disabled = true; document.getElementById('hint').hidden = true; }
-else openSeal(invite.k).then((d) => { opened = d; document.querySelectorAll('[data-apk]').forEach((a) => { a.href = d.apk; }); })
-  .catch(() => { invite.k = null; hold.disabled = true; document.getElementById('hint').hidden = true; setLang(lang); });
-
-// returning guests who already lit their lamp walk straight in
-try { if (invite.k && localStorage.getItem('yalla-lit') === '1') enter(); } catch (e) {}
+else openSeal(invite.i, invite.k).then((d) => {
+    opened = d; document.querySelectorAll('[data-apk]').forEach((a) => { a.href = d.apk; });
+    // returning guests who already lit their lamp walk straight in (only while the invitation is active)
+    try { if (localStorage.getItem('yalla-lit') === '1') enter(); } catch (e) {}
+  }).catch(() => {
+    invite = { i: null, k: null, to: '', n: '' };
+    try { localStorage.removeItem('yalla-invite'); localStorage.removeItem('yalla-lit'); } catch (e) {}
+    hold.disabled = true; document.getElementById('hint').hidden = true; setLang(lang);
+  });
 
 // press and hold (touch, mouse, keyboard): the ring fills, the lamp ignites, the city lights up
 const HOLD_MS = matchMedia('(prefers-reduced-motion: reduce)').matches ? 1 : 1400;
@@ -459,7 +465,7 @@ if ('IntersectionObserver' in window) {
 
 try {
   // on a computer the guest scans their OWN invitation onto their phone
-  const mine = invite.k ? '#' + new URLSearchParams({ k: invite.k, to: invite.to, n: invite.n }).toString() : '';
+  const mine = invite.k ? '#' + new URLSearchParams({ i: invite.i, k: invite.k, to: invite.to, n: invite.n }).toString() : '';
   const qr = qrcode(0, 'M'); qr.addData(location.origin + location.pathname + mine); qr.make();
   document.getElementById('qr').innerHTML = qr.createSvgTag({ cellSize: 4, margin: 0, scalable: true });
 } catch (e) { document.querySelector('.row').style.display = 'none'; }
