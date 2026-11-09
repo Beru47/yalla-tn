@@ -64,6 +64,13 @@
   html[lang='ar'] .why h2 { text-transform:none; letter-spacing:0; font-size:15px; }
   .mission { margin:0 0 22px; font-size:16.5px; max-width:520px; color:var(--ink); opacity:.92; }
   .sticky { display:none; }
+  .lit, .litv { font-style:normal; font-weight:700; color:var(--gold-2); text-shadow:0 0 14px rgba(255,193,72,.55), 0 0 32px rgba(255,193,72,.25); }
+  .litv { color:#D9CCFF; text-shadow:0 0 14px rgba(169,140,255,.65), 0 0 32px rgba(109,74,224,.35); }
+  .pillars b { color:var(--gold-2); text-shadow:0 0 12px rgba(255,193,72,.45); }
+  .thanks { text-align:center; max-width:640px; margin:8px auto 28px; padding:0 24px; position:relative; }
+  .thanks p { margin:0 0 6px; font-size:17px; line-height:1.6; }
+  .thanks a { color:var(--violet-l); font-weight:700; text-decoration:none; border-bottom:1px solid rgba(169,140,255,.4); }
+  .thanks a:hover { border-color:var(--violet-l); }
 
   .hero .logo {
     width:132px; height:132px; border-radius:32px; display:block; margin-bottom:28px;
@@ -183,6 +190,8 @@
   </section>
 </main>
 
+<section class="thanks"><p data-t="thanks1"></p><p data-t="thanks2"></p></section>
+
 <div class="sticky" id="sticky"><a class="btn" href="https://expo.dev/artifacts/eas/Ztb3MILKIqbW5vJp4PxlAg0Wn-BQlEkqTPJ5-TAE7ZE.apk" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg><span data-t="btn"></span></a></div>
 
 <footer>
@@ -196,9 +205,9 @@ const T = {
   en: {
     pill: 'Private beta · by invitation',
     h1: 'Get out with <em>your people.</em>',
-    lead: "A Tunisian app for people who would rather act than complain: plans with your people, one promise to yourself, and a street you can see getting better.",
+    lead: "A Tunisian app for people who would rather <i class=lit>act</i> than complain: plans with <i class=litv>your people</i>, <i class=lit>one promise</i> to yourself, and a street you can see <i class=lit>getting better</i>.",
     whyTitle: 'Why Yalla',
-    mission: 'Tunisia gets better when each of us changes a little: how we think, how we show up for each other, how we care for our street. Yalla turns that into small, real steps you take with the people around you, and shows you the difference.',
+    mission: '<i class=lit>Tunisia gets better</i> when each of us changes a little: <i class=litv>how we think</i>, how we <i class=litv>show up for each other</i>, how we <i class=litv>care for our street</i>. Yalla turns that into <i class=lit>small, real steps</i> you take with the people around you, and shows you <i class=lit>the difference</i>.',
     p1: 'Lamma', p1d: 'Plans with your people. Invite them over WhatsApp in one tap.',
     p2: 'One promise', p2d: 'A small daily path and a streak that keeps you going.',
     p3: 'Before / After', p3d: 'Fix something on your street and show the difference.',
@@ -208,14 +217,16 @@ const T = {
     s1: 'Tap “Download for Android”, then open the file.',
     s2: 'If Play Protect warns you: “More details” → “Install anyway”. It does this for every app outside the Play Store.',
     s3: 'Sign in with your email and enter the code you receive.',
-    foot: 'Thank you for testing. Your feedback shapes Yalla.'
+    thanks1: 'You are not just testing an app. You are <i class=lit>lighting the first lamps</i> of a better street.',
+    thanks2: 'Every bug you find and every idea you share makes the next light brighter. <a href="mailto:yalla.eagle@gmail.com?subject=Yalla%20beta">Tell us what you see</a>.',
+    foot: 'Private beta'
   },
   fr: {
     pill: 'Bêta privée · sur invitation',
     h1: 'Sortez avec <em>les vôtres.</em>',
-    lead: "L'application tunisienne pour ceux qui préfèrent agir plutôt que se plaindre : des sorties avec les vôtres, une promesse envers vous-même, et une rue qui s'améliore sous vos yeux.",
+    lead: "L'application tunisienne pour ceux qui préfèrent <i class=lit>agir</i> plutôt que se plaindre : des sorties avec <i class=litv>les vôtres</i>, <i class=lit>une promesse</i> envers vous-même, et une rue qui <i class=lit>s'améliore</i> sous vos yeux.",
     whyTitle: 'Pourquoi Yalla',
-    mission: "La Tunisie s'améliore quand chacun de nous change un peu : notre façon de penser, d'être là les uns pour les autres, de prendre soin de notre rue. Yalla transforme cela en petits pas concrets, faits avec les gens autour de vous, et vous montre la différence.",
+    mission: "<i class=lit>La Tunisie s'améliore</i> quand chacun de nous change un peu : <i class=litv>notre façon de penser</i>, <i class=litv>d'être là les uns pour les autres</i>, <i class=litv>de prendre soin de notre rue</i>. Yalla transforme cela en <i class=lit>petits pas concrets</i>, faits avec les gens autour de vous, et vous montre <i class=lit>la différence</i>.",
     p1: 'Lamma', p1d: 'Des sorties avec vos proches, invités par WhatsApp en un geste.',
     p2: 'Une promesse', p2d: 'Un petit chemin quotidien et une série qui vous porte.',
     p3: 'Avant / Après', p3d: 'Améliorez votre rue et montrez la différence.',
@@ -225,14 +236,16 @@ const T = {
     s1: 'Touchez « Télécharger pour Android », puis ouvrez le fichier.',
     s2: 'Si Play Protect vous avertit : « Plus de détails » → « Installer quand même ». C’est le cas pour toute application hors Play Store.',
     s3: 'Connectez-vous avec votre e-mail et saisissez le code reçu.',
-    foot: 'Merci de tester. Vos retours façonnent Yalla.'
+    thanks1: "Vous ne testez pas seulement une application. Vous <i class=lit>allumez les premières lumières</i> d'une rue meilleure.",
+    thanks2: 'Chaque bug trouvé, chaque idée partagée rend la prochaine lumière plus forte. <a href="mailto:yalla.eagle@gmail.com?subject=Yalla%20b%C3%AAta">Dites-nous ce que vous voyez</a>.',
+    foot: 'Bêta privée'
   },
   ar: {
     pill: 'نسخة تجريبية خاصة · بدعوة',
     h1: 'يلّا، اخرج مع <em>أحبّتك.</em>',
-    lead: 'تطبيق تونسي لمن يفضّل الفعل على الشكوى: خرجات مع أحبّتك، ووعد واحد لنفسك، وشارع تراه يتحسّن.',
+    lead: 'تطبيق تونسي لمن يفضّل <i class=lit>الفعل</i> على الشكوى: خرجات مع <i class=litv>أحبّتك</i>، و<i class=lit>وعد واحد</i> لنفسك، وشارع تراه <i class=lit>يتحسّن</i>.',
     whyTitle: 'لماذا يلّا',
-    mission: 'تتحسّن تونس حين يتغيّر كلّ واحد منّا قليلًا: في طريقة تفكيرنا، وفي وقوفنا إلى جانب بعضنا، وفي عنايتنا بشارعنا. يحوّل يلّا ذلك إلى خطوات صغيرة وحقيقية تخطوها مع من حولك، ويُريك الفرق.',
+    mission: '<i class=lit>تتحسّن تونس</i> حين يتغيّر كلّ واحد منّا قليلًا: <i class=litv>في طريقة تفكيرنا</i>، <i class=litv>وفي وقوفنا إلى جانب بعضنا</i>، <i class=litv>وفي عنايتنا بشارعنا</i>. يحوّل يلّا ذلك إلى <i class=lit>خطوات صغيرة وحقيقية</i> تخطوها مع من حولك، ويُريك <i class=lit>الفرق</i>.',
     p1: 'لمّة', p1d: 'خطط مع أحبّتك، والدعوة عبر واتساب بلمسة واحدة.',
     p2: 'وعد واحد', p2d: 'مسار يومي صغير وسلسلة أيام تدفعك إلى الاستمرار.',
     p3: 'قبل / بعد', p3d: 'أصلح شيئًا في شارعك وأظهر الفرق.',
@@ -242,7 +255,9 @@ const T = {
     s1: 'اضغط «تحميل لأندرويد» ثم افتح الملف.',
     s2: 'إذا ظهر تحذير Play Protect: «مزيد من التفاصيل» ← «التثبيت على أي حال». يظهر هذا لكل تطبيق من خارج متجر Play.',
     s3: 'سجّل الدخول ببريدك الإلكتروني وأدخل الرمز الذي يصلك.',
-    foot: 'شكرًا لتجربتك. ملاحظاتك تصنع يلّا.'
+    thanks1: 'أنت لا تجرّب تطبيقًا فحسب، بل <i class=lit>تُضيء أولى أنوار</i> شارعٍ أفضل.',
+    thanks2: 'كلّ خلل تكتشفه وكلّ فكرة تشاركها تجعل النور التالي أقوى. <a href="mailto:yalla.eagle@gmail.com?subject=Yalla%20beta">أخبرنا بما تراه</a>.',
+    foot: 'نسخة تجريبية خاصة'
   }
 };
 
