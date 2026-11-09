@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#06030F">
+<title>Yalla — private beta</title>
+<meta name="description" content="Yalla: plans with your people, one promise to yourself, and your street before and after. Private beta for Android.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Yalla — private beta">
+<meta property="og:description" content="Plans with your people, one promise to yourself, your street before and after.">
+<meta property="og:image" content="https://beru47.github.io/yalla/yalla.png">
+<meta property="og:url" content="https://beru47.github.io/yalla/">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="yalla.png">
+<link rel="apple-touch-icon" href="yalla.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#06030F; --card:rgba(255,255,255,.045); --line:rgba(255,255,255,.09);
+    --ink:#F4F1FF; --muted:#A79FC4; --violet:#6D4AE0; --violet-l:#A98CFF; --gold:#FFC148; --gold-2:#FFE7A8;
+    --ease:cubic-bezier(.16,1,.3,1);
+  }
+  * { box-sizing:border-box; }
+  html, body { margin:0; }
+  body {
+    min-height:100vh; background:var(--bg); color:var(--ink);
+    font:16px/1.55 Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+    background-image:
+      radial-gradient(900px 600px at 18% 30%, rgba(109,74,224,.28), transparent 60%),
+      radial-gradient(700px 500px at 85% 80%, rgba(255,193,72,.10), transparent 60%);
+    background-attachment:fixed;
+    display:flex; flex-direction:column;
+  }
+  html[lang="ar"] body { font-family:Cairo, system-ui, sans-serif; }
+  /* a few still stars, CSS only */
+  body::before {
+    content:""; position:fixed; inset:0; pointer-events:none; opacity:.55;
+    background-image:
+      radial-gradient(1.5px 1.5px at 12% 18%, #fff, transparent), radial-gradient(1px 1px at 27% 72%, #fff, transparent),
+      radial-gradient(1.5px 1.5px at 44% 9%, var(--gold-2), transparent), radial-gradient(1px 1px at 63% 41%, #fff, transparent),
+      radial-gradient(1.5px 1.5px at 78% 14%, #fff, transparent), radial-gradient(1px 1px at 91% 58%, var(--gold-2), transparent),
+      radial-gradient(1px 1px at 7% 88%, #fff, transparent), radial-gradient(1.5px 1.5px at 52% 93%, #fff, transparent);
+  }
+
+  header, main, footer { width:100%; max-width:1120px; margin:0 auto; padding:0 24px; position:relative; }
+  header { display:flex; align-items:center; justify-content:space-between; padding-top:22px; }
+  .brand { display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.2px; }
+  .brand img { width:30px; height:30px; border-radius:8px; }
+  .langs { display:flex; gap:4px; background:var(--card); border:1px solid var(--line); border-radius:999px; padding:4px; }
+  .langs button {
+    font:inherit; font-size:13px; font-weight:700; color:var(--muted); background:none; border:0;
+    padding:6px 12px; border-radius:999px; cursor:pointer; transition:background .3s var(--ease), color .3s var(--ease);
+  }
+  .langs button[aria-pressed="true"] { background:var(--violet); color:#fff; }
+  .langs button:focus-visible, .btn:focus-visible { outline:2px solid var(--gold); outline-offset:3px; }
+
+  main { flex:1; display:grid; grid-template-columns:1.1fr .9fr; gap:56px; align-items:center; padding-top:40px; padding-bottom:40px; }
+
+  .hero .logo {
+    width:132px; height:132px; border-radius:32px; display:block; margin-bottom:28px;
+    box-shadow:0 0 0 1px rgba(255,255,255,.06), 0 20px 70px rgba(109,74,224,.55), 0 0 120px rgba(255,193,72,.12);
+    animation:rise .9s var(--ease) both;
+  }
+  .pill { display:inline-block; font-size:12px; font-weight:700; letter-spacing:.6px; text-transform:uppercase; color:var(--gold); border:1px solid rgba(255,193,72,.35); border-radius:999px; padding:4px 12px; margin-bottom:16px; }
+  html[lang="ar"] .pill { text-transform:none; letter-spacing:0; }
+  h1 { font-size:clamp(36px, 5vw, 60px); line-height:1.08; margin:0 0 16px; font-weight:900; letter-spacing:-.5px; }
+  h1 em { font-style:normal; background:linear-gradient(90deg, var(--violet-l), var(--gold)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .lead { color:var(--muted); font-size:18px; max-width:520px; margin:0 0 28px; }
+  .pillars { list-style:none; padding:0; margin:0; display:grid; gap:12px; max-width:520px; }
+  .pillars li { display:flex; gap:14px; align-items:flex-start; }
+  .pillars b { display:block; }
+  .pillars span { color:var(--muted); font-size:15px; }
+  .dot { flex:none; width:34px; height:34px; border-radius:10px; display:grid; place-items:center; background:var(--card); border:1px solid var(--line); }
+  .dot svg { width:18px; height:18px; }
+
+  .card {
+    background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+    border:1px solid var(--line); border-radius:24px; padding:28px;
+    backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+    box-shadow:0 30px 80px rgba(0,0,0,.45);
+    animation:rise .9s .12s var(--ease) both;
+  }
+  .card h2 { margin:0 0 4px; font-size:20px; }
+  .card .sub { margin:0 0 20px; color:var(--muted); font-size:14px; }
+  .btn {
+    display:flex; align-items:center; justify-content:center; gap:10px; width:100%;
+    background:var(--violet); color:#fff; text-decoration:none; font-weight:800; font-size:17px;
+    padding:16px 18px; border-radius:14px; transition:transform .3s var(--ease), box-shadow .3s var(--ease);
+    box-shadow:0 10px 30px rgba(109,74,224,.45);
+  }
+  .btn:hover { transform:translateY(-2px); box-shadow:0 16px 40px rgba(109,74,224,.6); }
+  .btn svg { width:20px; height:20px; }
+  .meta { display:flex; justify-content:center; gap:14px; color:var(--muted); font-size:12.5px; margin:10px 0 22px; }
+  .row { display:grid; grid-template-columns:auto 1fr; gap:20px; align-items:center; border-top:1px solid var(--line); padding-top:20px; }
+  #qr { width:116px; height:116px; background:#fff; border-radius:12px; padding:8px; }
+  #qr svg { width:100%; height:100%; display:block; }
+  .row p { margin:0; font-size:14px; color:var(--muted); }
+  .row p b { color:var(--ink); }
+  ol { margin:20px 0 0; padding-inline-start:20px; color:var(--muted); font-size:14px; }
+  ol li { margin:6px 0; }
+  ol li::marker { color:var(--gold); font-weight:700; }
+
+  footer { display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; color:var(--muted); font-size:13px; padding-bottom:24px; }
+
+  @keyframes rise { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:none; } }
+  @media (prefers-reduced-motion: reduce) { * { animation:none !important; transition:none !important; } }
+
+  @media (max-width: 860px) {
+    main { grid-template-columns:1fr; gap:32px; padding-top:28px; }
+    .hero .logo { width:96px; height:96px; border-radius:24px; margin-bottom:20px; }
+    .lead { font-size:16px; }
+    .row { display:none; }               /* on the phone itself, the QR is useless */
+  }
+  @media (max-width: 420px) {
+    header, main, footer { padding-left:16px; padding-right:16px; }
+    .card { padding:20px; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="brand"><img src="yalla.png" alt=""><span>Yalla</span></div>
+  <nav class="langs" aria-label="Language">
+    <button type="button" data-lang="ar">ع</button>
+    <button type="button" data-lang="fr">FR</button>
+    <button type="button" data-lang="en">EN</button>
+  </nav>
+</header>
+
+<main>
+  <section class="hero">
+    <img class="logo" src="yalla.png" alt="Yalla" width="132" height="132">
+    <span class="pill" data-t="pill"></span>
+    <h1 data-t="h1"></h1>
+    <p class="lead" data-t="lead"></p>
+    <ul class="pillars">
+      <li><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="#A98CFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 19c0-3 3-5 6-5s6 2 6 5M14 19c0-2 1.5-3.5 4-3.5s3 1 3 3.5"/></svg></span><div><b data-t="p1"></b><span data-t="p1d"></span></div></li>
+      <li><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="#FFC148" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.4 5.6L20 9.3l-4.3 3.9 1.2 5.8L12 16l-4.9 3 1.2-5.8L4 9.3l5.6-.7z"/></svg></span><div><b data-t="p2"></b><span data-t="p2d"></span></div></li>
+      <li><span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="#3FD2C0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="8" height="14" rx="2"/><rect x="13" y="5" width="8" height="14" rx="2"/><path d="M6 15l2-3 2 3M16 13l1.5 2 2.5-4"/></svg></span><div><b data-t="p3"></b><span data-t="p3d"></span></div></li>
+    </ul>
+  </section>
+
+  <section class="card" aria-labelledby="dl">
+    <h2 id="dl" data-t="dlTitle"></h2>
+    <p class="sub" data-t="dlSub"></p>
+    <a class="btn" id="download" href="https://expo.dev/artifacts/eas/Ztb3MILKIqbW5vJp4PxlAg0Wn-BQlEkqTPJ5-TAE7ZE.apk" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>
+      <span data-t="btn"></span>
+    </a>
+    <div class="meta"><span>Android 8+</span><span>·</span><span data-t="ios"></span></div>
+    <div class="row">
+      <div id="qr" role="img" aria-label="QR code"></div>
+      <p data-t="qr"></p>
+    </div>
+    <ol>
+      <li data-t="s1"></li>
+      <li data-t="s2"></li>
+      <li data-t="s3"></li>
+    </ol>
+  </section>
+</main>
+
+<footer>
+  <span data-t="foot"></span>
+  <span>© Yalla · Tunisia</span>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js" integrity="sha384-8FWZA6BGMXhsfO+BLtrJK0We6gg5o1JyO8xQm6peWDEUs17ACA5ziE/NIAkl9z2k" crossorigin="anonymous"></script>
+<script>
+const T = {
+  en: {
+    pill: 'Private beta · by invitation',
+    h1: 'Get out with <em>your people.</em>',
+    lead: "Yalla is Tunisia's app for making plans with the people you love, keeping one promise to yourself, and watching your street change.",
+    p1: 'Lamma', p1d: 'Plans with your people. Invite them over WhatsApp in one tap.',
+    p2: 'One promise', p2d: 'A small daily path and a streak that keeps you going.',
+    p3: 'Before / After', p3d: 'Fix something on your street and show the difference.',
+    dlTitle: 'Install Yalla', dlSub: 'You are among the first to try it.',
+    btn: 'Download for Android', ios: 'iPhone: soon',
+    qr: '<b>On a computer?</b> Scan with your Android phone to open this page there.',
+    s1: 'Tap “Download for Android”, then open the file.',
+    s2: 'If Play Protect warns you: “More details” → “Install anyway”. It does this for every app outside the Play Store.',
+    s3: 'Sign in with your email and enter the code you receive.',
+    foot: 'Thank you for testing. Your feedback shapes Yalla.'
+  },
+  fr: {
+    pill: 'Bêta privée · sur invitation',
+    h1: 'Sortez avec <em>les vôtres.</em>',
+    lead: "Yalla est l'application tunisienne pour organiser des sorties avec ceux que vous aimez, tenir une promesse envers vous-même et voir votre rue changer.",
+    p1: 'Lamma', p1d: 'Des sorties avec vos proches, invités par WhatsApp en un geste.',
+    p2: 'Une promesse', p2d: 'Un petit chemin quotidien et une série qui vous porte.',
+    p3: 'Avant / Après', p3d: 'Améliorez votre rue et montrez la différence.',
+    dlTitle: 'Installer Yalla', dlSub: 'Vous faites partie des premiers à l’essayer.',
+    btn: 'Télécharger pour Android', ios: 'iPhone : bientôt',
+    qr: '<b>Sur un ordinateur ?</b> Scannez avec votre téléphone Android pour ouvrir cette page.',
+    s1: 'Touchez « Télécharger pour Android », puis ouvrez le fichier.',
+    s2: 'Si Play Protect vous avertit : « Plus de détails » → « Installer quand même ». C’est le cas pour toute application hors Play Store.',
+    s3: 'Connectez-vous avec votre e-mail et saisissez le code reçu.',
+    foot: 'Merci de tester. Vos retours façonnent Yalla.'
+  },
+  ar: {
+    pill: 'نسخة تجريبية خاصة · بدعوة',
+    h1: 'يلّا، اخرج مع <em>أحبّتك.</em>',
+    lead: 'يلّا هو التطبيق التونسي لتنظيم الخرجات مع من تحبّ، والوفاء بوعدٍ واحد لنفسك، ورؤية شارعك يتغيّر.',
+    p1: 'لمّة', p1d: 'خطط مع أحبّتك، والدعوة عبر واتساب بلمسة واحدة.',
+    p2: 'وعد واحد', p2d: 'مسار يومي صغير وسلسلة أيام تدفعك إلى الاستمرار.',
+    p3: 'قبل / بعد', p3d: 'أصلح شيئًا في شارعك وأظهر الفرق.',
+    dlTitle: 'ثبّت يلّا', dlSub: 'أنت من أوائل من يجرّبه.',
+    btn: 'تحميل لأندرويد', ios: 'آيفون: قريبًا',
+    qr: '<b>على الحاسوب؟</b> امسح الرمز بهاتف أندرويد لفتح هذه الصفحة عليه.',
+    s1: 'اضغط «تحميل لأندرويد» ثم افتح الملف.',
+    s2: 'إذا ظهر تحذير Play Protect: «مزيد من التفاصيل» ← «التثبيت على أي حال». يظهر هذا لكل تطبيق من خارج متجر Play.',
+    s3: 'سجّل الدخول ببريدك الإلكتروني وأدخل الرمز الذي يصلك.',
+    foot: 'شكرًا لتجربتك. ملاحظاتك تصنع يلّا.'
+  }
+};
+
+function setLang(l) {
+  const t = T[l] || T.en;
+  document.documentElement.lang = l;
+  document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+  document.querySelectorAll('[data-t]').forEach(el => { el.innerHTML = t[el.dataset.t]; });
+  document.querySelectorAll('.langs button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === l)));
+  try { localStorage.setItem('yalla-lang', l); } catch (e) {}
+}
+document.querySelectorAll('.langs button').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
+
+let saved = null;
+try { saved = localStorage.getItem('yalla-lang'); } catch (e) {}
+const nav = (navigator.language || 'en').slice(0, 2);
+setLang(saved || (T[nav] ? nav : 'en'));
+
+try {
+  const qr = qrcode(0, 'M');
+  qr.addData(location.origin + location.pathname);
+  qr.make();
+  document.getElementById('qr').innerHTML = qr.createSvgTag({ cellSize: 4, margin: 0, scalable: true });
+} catch (e) { document.querySelector('.row').style.display = 'none'; }
+</script>
+</body>
+</html>
